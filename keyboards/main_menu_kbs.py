@@ -1,4 +1,4 @@
-from stdafx import *
+from keyboards.stdafx import *
 
 '''--------------------------------ГЛАВНОЕ МЕНЮ--------------------------------'''
 schedule_btn = KeyboardButton('Расписание')

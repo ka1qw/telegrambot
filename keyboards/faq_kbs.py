@@ -1,5 +1,5 @@
-from stdafx import *
-from common_kbs_and_btns import to_main_menu_btn, back_btn
+from keyboards.stdafx import *
+from keyboards.common_kbs_and_btns import to_main_menu_btn, back_btn
 
 '''--------------------------------FAQ--------------------------------'''  # тут будет ОЧЕНЬ много state's
 faq_main_kb = ReplyKeyboardMarkup(resize_keyboard=True)

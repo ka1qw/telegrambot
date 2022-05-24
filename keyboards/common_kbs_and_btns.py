@@ -1,4 +1,4 @@
-from stdafx import *
+from keyboards.stdafx import *
 
 '''--------------------------------ОБЩИЕ КЛАВЫ--------------------------------'''
 back_and_to_main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True)
