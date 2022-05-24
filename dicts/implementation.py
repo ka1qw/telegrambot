@@ -3,7 +3,7 @@
 #
 # Feel free to use this code in your own projects, including commercial projects
 # License: Apache v2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
-
+# todo: перенести в отдельный пакет с модулями, т.к. это не словарь
 from __future__ import annotations
 # some of these types are deprecated: https://www.python.org/dev/peps/pep-0585/
 from typing import Protocol, Dict, List, Iterator, Tuple, TypeVar, Optional
