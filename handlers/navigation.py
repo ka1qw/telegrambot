@@ -10,7 +10,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from phrases.navi_phrases import *
 
 # клавиатуры
-from keyboards.navi_kbs import *
+from keyboards.navi_kbs import navigation_kb, navigation_decanat_kb, navigation_department_kb, navigation_auditorium_kb, navigation_other_kb, clear_keyboard
 from keyboards.common_kbs_and_btns import *
 from keyboards.main_menu_kbs import *
 
