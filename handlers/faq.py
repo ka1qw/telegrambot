@@ -47,6 +47,7 @@ async def command_faq_holidays(message: types.Message):
 
 
 # допса
+# todo: переименовать команды во что-то читаемое
 async def command_faq_addsession(message: types.Message, state: FSMContext):
     await FSMfaq.addSession.set()
     await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
@@ -68,6 +69,7 @@ async def command_faq_addSession_2(message: types.Message, state: FSMContext):
     elif message.text in [i[0] for i in groups.items()]:
         async with state.proxy() as data:
             data['group'] = message.text
+            # todo: реализовать выдачу пути к деканату, связать с навигацией
             ### здесь надо выдавать деканат и (возможно) путь к нему ###
             await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
                                                          f'Твой деканат: деканат факультета/института '
@@ -79,6 +81,7 @@ async def command_faq_addSession_2(message: types.Message, state: FSMContext):
         data['way'].append('addSession_2')
 
 
+# todo: сделать разветвление на повышку по оценкам и по достижениям
 # повышка
 async def command_faq_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship.set()
