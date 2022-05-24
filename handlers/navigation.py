@@ -1,7 +1,6 @@
 # общее
 from create_bot import bot
 from aiogram import types, Dispatcher
-import collections
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
@@ -18,6 +17,8 @@ from keyboards.main_menu_kbs import *
 from dicts.graf import graf
 from dicts.implementation import *
 
+#навигационные алгоритмы
+from dicts.implementation import *
 example_graph = SimpleGraph()
 example_graph.edges = graf
 
@@ -94,6 +95,7 @@ async def command_get_way(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         await bot.send_message(message.from_user.id,
                                "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+        seacher()
     await FSMnavi.next()
 
 
