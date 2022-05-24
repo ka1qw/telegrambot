@@ -30,6 +30,7 @@ class FSMnavi(StatesGroup):
     other = State()
     place_now = State()  # ввод местонахождения
     pathfinder = State()
+    last_one = State()
 
 
 async def navi_start(message: types.Message, state: FSMContext):
