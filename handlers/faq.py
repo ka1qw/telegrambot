@@ -1,7 +1,7 @@
 # общее
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.dispatcher.filters.state import StatesGroup, State, StatesGroupMeta
 from create_bot import bot
 from aiogram import types, Dispatcher
 
@@ -23,7 +23,8 @@ class FSMfaq(StatesGroup):
     addSession = State()  # допса
     addSession_1 = State()  #
     addSession_2 = State()  #
-    scholarship = State()  # повышка
+    scholarship = State()
+    scholarship_1 = State()
     militaryDep = State()  # военка
     militaryDep_1 = State()
 
@@ -35,6 +36,8 @@ async def command_faq_start(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         # data['way'].clear
         data['way'] = ['start']
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
 # каникулы
@@ -52,13 +55,18 @@ async def command_faq_addsession(message: types.Message, state: FSMContext):
     await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
     async with state.proxy() as data:
         data['way'].append('addSession')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
 async def command_faq_addsession_department_choice(message: types.Message, state: FSMContext):
     await FSMfaq.addSession_1.set()
-    await bot.send_message(message.from_user.id, faq_addSession_department_info, reply_markup=faq_addSession_decanat_kb)
+    await bot.send_message(message.from_user.id, faq_addSession_department_info,
+                           reply_markup=faq_addSession_department_group_input_kb)
     async with state.proxy() as data:
         data['way'].append('addSession_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
 async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
@@ -75,7 +83,7 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
                                                          f'{groups.get(message.text).get("department")}')
     elif message.text not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
-                               reply_markup=faq_addSession_decanat_kb_2)
+                               reply_markup=faq_addSession_department_group_input_kb_without_back_btn)
     async with state.proxy() as data:
         data['way'].append('addSession_2')
 
@@ -84,32 +92,56 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
 # повышка
 async def command_faq_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_info)
-    await FSMfaq.faq_start.set()
-    # async with state.proxy() as data:
-    #     data['way'].append('scholarship')
+    await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
+    async with state.proxy() as data:
+        data['way'].append('scholarship')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-# военка
-async def command_faq_militaryDep(message: types.Message, state: FSMContext):
+async def command_faq_scholarship_pgas(message: types.Message, state: FSMContext):
+    await FSMfaq.scholarship_1.set()
+    await bot.send_message(message.from_user.id, faq_scholarship_pgas_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('scholarship_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_scholarship_not_pgas(message: types.Message, state: FSMContext):
+    await FSMfaq.scholarship_1.set()
+    await bot.send_message(message.from_user.id, faq_scholarship_not_pgas_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('scholarship_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_military_department_choice(message: types.Message, state: FSMContext):
     await FSMfaq.militaryDep.set()
     await bot.send_message(message.from_user.id, faq_militaryDep_info_choice, reply_markup=faq_militaryDep_choice)
     async with state.proxy() as data:
         data['way'].append('militaryDep')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-async def command_faq_militaryDep_centre(message: types.Message, state: FSMContext):
+async def command_faq_military_department_centre(message: types.Message, state: FSMContext):
     await FSMfaq.militaryDep_1.set()
     await bot.send_message(message.from_user.id, faq_militaryDep_info_centre, reply_markup=back_and_to_main_menu_kb)
     async with state.proxy() as data:
         data['way'].append('militaryDep_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-async def command_faq_militaryDep_table(message: types.Message, state: FSMContext):
+async def command_faq_military_department_table(message: types.Message, state: FSMContext):
     await FSMfaq.militaryDep_1.set()
     await bot.send_message(message.from_user.id, faq_militaryDep_info_table, reply_markup=back_and_to_main_menu_kb)
     async with state.proxy() as data:
         data['way'].append('militaryDep_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
 # Выход из состояний
@@ -123,10 +155,11 @@ async def to_start_faq(message: types.Message, state: FSMContext):
 
 async def on_back_faq(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
+        current_state = await state.get_state()
+        print(f"Удаляю {data['way'][-1]} состояние")
         data['way'].pop()
-        print(data['way'])
+        print(f"Ветка состояний: {data['way']}")
         if len(data['way']) == 0:
-            current_state = await state.get_state()
             if current_state is None:
                 return
             await state.finish()
@@ -134,31 +167,43 @@ async def on_back_faq(message: types.Message, state: FSMContext):
         elif data['way'][-1] == 'start':
             await FSMfaq.faq_start.set()
             await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'holidays':
             await FSMfaq.faq_start.set()
             await bot.send_message(message.from_user.id, faq_holiday_info, reply_markup=faq_main_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'scholarship':
-            await FSMfaq.faq_start.set()
-            await bot.send_message(message.from_user.id, faq_scholarship_info, reply_markup=faq_main_kb)
+            await FSMfaq.scholarship.set()
+            await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
+        elif data['way'][-1] == 'scholarship_1':
+            await FSMfaq.scholarship_1.set()
+            await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'militaryDep':
             await FSMfaq.militaryDep.set()
             await bot.send_message(message.from_user.id, faq_militaryDep_info_choice,
                                    reply_markup=faq_militaryDep_choice)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'militaryDep_1':
             await FSMfaq.militaryDep_1.set()
             await bot.send_message(message.from_user.id, faq_militaryDep_info_choice,
                                    reply_markup=back_and_to_main_menu_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession':
             await FSMfaq.addSession.set()
             await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession_1':
             await FSMfaq.addSession_1.set()
             await bot.send_message(message.from_user.id, faq_addSession_department_info,
-                                   reply_markup=faq_addSession_decanat_kb)
+                                   reply_markup=faq_addSession_department_group_input_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession_2':
             await FSMfaq.addSession_2.set()
             await bot.send_message(message.from_user.id, faq_addSession_department_info,
                                    reply_markup=back_and_to_main_menu_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
 def register_handlers_faq(dp: Dispatcher):
@@ -175,13 +220,21 @@ def register_handlers_faq(dp: Dispatcher):
                                 Text(equals='Какой у меня деканат?', ignore_case=True),
                                 state=FSMfaq.addSession)
     dp.register_message_handler(command_faq_addsession_group_input,
-                                state=FSMfaq.addSession_1)  # Text(equals=[i for i in groups], ignore_case=True),
+                                state=FSMfaq.addSession_1)
 
     dp.register_message_handler(command_faq_scholarship, Text(equals='Повышенная стипендия', ignore_case=True),
                                 state=FSMfaq.faq_start)
-    dp.register_message_handler(command_faq_militaryDep, Text(equals='Военная кафедра', ignore_case=True),
+    dp.register_message_handler(command_faq_scholarship_pgas, Text(equals='ПГАС', ignore_case=True),
+                                state=FSMfaq.scholarship)
+    dp.register_message_handler(command_faq_scholarship_not_pgas,
+                                Text(equals='Стипендия за отличную учебу', ignore_case=True),
+                                state=FSMfaq.scholarship)
+
+    dp.register_message_handler(command_faq_military_department_choice, Text(equals='Военная кафедра', ignore_case=True),
                                 state=FSMfaq.faq_start)
-    dp.register_message_handler(command_faq_militaryDep_centre, Text(equals='Военно-учебный центр', ignore_case=True),
+    dp.register_message_handler(command_faq_military_department_centre,
+                                Text(equals='Военно-учебный центр', ignore_case=True),
                                 state=FSMfaq.militaryDep)
-    dp.register_message_handler(command_faq_militaryDep_table, Text(equals='Военно-учетный стол', ignore_case=True),
+    dp.register_message_handler(command_faq_military_department_table,
+                                Text(equals='Военно-учетный стол', ignore_case=True),
                                 state=FSMfaq.militaryDep)
