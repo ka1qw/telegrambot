@@ -32,7 +32,8 @@ faq_addSession_department_group_input_kb_without_back_btn.add(faq_addSession_kno
 faq_addSession_department_group_input_kb_without_back_btn.add(to_main_menu_btn)
 
 faq_scholarship_choice_kb = ReplyKeyboardMarkup(resize_keyboard=True)
-faq_scholarship_choice_pgas_btn = KeyboardButton('ПГАС')
-faq_scholarship_choice_not_pgas_btn = KeyboardButton('Стипендия за отличную учебу')
-faq_scholarship_choice_kb.add(faq_scholarship_choice_pgas_btn).insert(faq_scholarship_choice_not_pgas_btn)
-faq_scholarship_choice_kb.add(to_main_menu_btn,back_btn)
+faq_scholarship_choice_increased_scholarship_btn = KeyboardButton('ПГАС')
+faq_scholarship_choice_common_scholarship_btn = KeyboardButton('Академическая стипендия')
+faq_scholarship_choice_kb.add(faq_scholarship_choice_increased_scholarship_btn).insert(
+    faq_scholarship_choice_common_scholarship_btn)
+faq_scholarship_choice_kb.add(to_main_menu_btn, back_btn)
