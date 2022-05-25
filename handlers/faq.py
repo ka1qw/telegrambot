@@ -47,7 +47,6 @@ async def command_faq_holidays(message: types.Message):
 
 
 # допса
-# todo: переименовать команды во что-то читаемое
 async def command_faq_addsession(message: types.Message, state: FSMContext):
     await FSMfaq.addSession.set()
     await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
@@ -55,14 +54,14 @@ async def command_faq_addsession(message: types.Message, state: FSMContext):
         data['way'].append('addSession')
 
 
-async def command_faq_addsession_1(message: types.Message, state: FSMContext):
+async def command_faq_addsession_department_choice(message: types.Message, state: FSMContext):
     await FSMfaq.addSession_1.set()
     await bot.send_message(message.from_user.id, faq_addSession_department_info, reply_markup=faq_addSession_decanat_kb)
     async with state.proxy() as data:
         data['way'].append('addSession_1')
 
 
-async def command_faq_addSession_2(message: types.Message, state: FSMContext):
+async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу :(":
         await FSMfaq.addSession_2.set()
         await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
@@ -172,9 +171,10 @@ def register_handlers_faq(dp: Dispatcher):
                                 state=FSMfaq.faq_start)
     dp.register_message_handler(command_faq_addsession, Text(equals='Дополнительная сессия', ignore_case=True),
                                 state=FSMfaq.faq_start)
-    dp.register_message_handler(command_faq_addsession_1, Text(equals='Какой у меня деканат?', ignore_case=True),
+    dp.register_message_handler(command_faq_addsession_department_choice,
+                                Text(equals='Какой у меня деканат?', ignore_case=True),
                                 state=FSMfaq.addSession)
-    dp.register_message_handler(command_faq_addSession_2,
+    dp.register_message_handler(command_faq_addsession_group_input,
                                 state=FSMfaq.addSession_1)  # Text(equals=[i for i in groups], ignore_case=True),
 
     dp.register_message_handler(command_faq_scholarship, Text(equals='Повышенная стипендия', ignore_case=True),
