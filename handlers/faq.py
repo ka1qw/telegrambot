@@ -101,7 +101,15 @@ async def command_faq_scholarship(message: types.Message, state: FSMContext):
 
 async def command_faq_scholarship_pgas(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship_1.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_pgas_info, reply_markup=back_and_to_main_menu_kb)
+    await bot.send_message(message.from_user.id, faq_scholarship_increased_scholarship_info,
+                           reply_markup=back_and_to_main_menu_kb)
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/increased_scholarship/Заявление.docx", 'rb'))
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/increased_scholarship/Карта_претендента.docx", 'rb'))
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/increased_scholarship/Регламент.pdf", 'rb'))
+
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
@@ -110,7 +118,8 @@ async def command_faq_scholarship_pgas(message: types.Message, state: FSMContext
 
 async def command_faq_scholarship_not_pgas(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship_1.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_not_pgas_info, reply_markup=back_and_to_main_menu_kb)
+    await bot.send_message(message.from_user.id, faq_scholarship_common_scholarship_info,
+                           reply_markup=back_and_to_main_menu_kb)
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
@@ -230,7 +239,8 @@ def register_handlers_faq(dp: Dispatcher):
                                 Text(equals='Стипендия за отличную учебу', ignore_case=True),
                                 state=FSMfaq.scholarship)
 
-    dp.register_message_handler(command_faq_military_department_choice, Text(equals='Военная кафедра', ignore_case=True),
+    dp.register_message_handler(command_faq_military_department_choice,
+                                Text(equals='Военная кафедра', ignore_case=True),
                                 state=FSMfaq.faq_start)
     dp.register_message_handler(command_faq_military_department_centre,
                                 Text(equals='Военно-учебный центр', ignore_case=True),
