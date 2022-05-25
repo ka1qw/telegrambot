@@ -1,7 +1,7 @@
 # общее
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import StatesGroup, State, StatesGroupMeta
+from aiogram.dispatcher.filters.state import StatesGroup, State
 from create_bot import bot
 from aiogram import types, Dispatcher
 
@@ -79,7 +79,7 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         async with state.proxy() as data:
             data['group'] = message.text
             # todo: реализовать выдачу пути к деканату, связать с навигацией
-            ### здесь надо выдавать деканат и (возможно) путь к нему ###
+
             await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
                                                          f'Твой деканат: деканат факультета/института '
                                                          f'{groups.get(message.text).get("department")}')
