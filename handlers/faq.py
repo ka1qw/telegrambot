@@ -236,7 +236,7 @@ def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(command_faq_scholarship_pgas, Text(equals='ПГАС', ignore_case=True),
                                 state=FSMfaq.scholarship)
     dp.register_message_handler(command_faq_scholarship_not_pgas,
-                                Text(equals='Стипендия за отличную учебу', ignore_case=True),
+                                Text(equals='Академическая стипендия', ignore_case=True),
                                 state=FSMfaq.scholarship)
 
     dp.register_message_handler(command_faq_military_department_choice,
