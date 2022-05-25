@@ -18,6 +18,8 @@ from keyboards.main_menu_kbs import *
 
 
 class FSMfaq(StatesGroup):
+    # todo: разнообразить ветку со стипендиями, добавить социальную и иностранцам
+
     faq_start = State()
     holidays = State()  # каникулы
     addSession = State()  # допса
@@ -88,8 +90,6 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         data['way'].append('addSession_2')
 
 
-# todo: сделать разветвление на повышку по оценкам и по достижениям
-# повышка
 async def command_faq_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship.set()
     await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
@@ -216,6 +216,10 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
+async def unknown_command_faq(message: types.Message):
+    await bot.send_message(message.from_user.id, "Неизвестная команда")
+
+
 def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(on_back_faq, Text(equals='Назад', ignore_case=True),
                                 state=[i for i in FSMfaq.all_states])
@@ -249,3 +253,5 @@ def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(command_faq_military_department_table,
                                 Text(equals='Военно-учетный стол', ignore_case=True),
                                 state=FSMfaq.militaryDep)
+    # должна быть в конце
+    dp.register_message_handler(unknown_command_faq, state=[i for i in FSMfaq.all_states])
