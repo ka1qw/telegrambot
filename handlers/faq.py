@@ -99,7 +99,7 @@ async def command_faq_scholarship(message: types.Message, state: FSMContext):
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-async def command_faq_scholarship_pgas(message: types.Message, state: FSMContext):
+async def command_faq_increased_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship_1.set()
     await bot.send_message(message.from_user.id, faq_scholarship_increased_scholarship_info,
                            reply_markup=back_and_to_main_menu_kb)
@@ -109,17 +109,18 @@ async def command_faq_scholarship_pgas(message: types.Message, state: FSMContext
                             document=open("resources/docs/increased_scholarship/Карта_претендента.docx", 'rb'))
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/increased_scholarship/Регламент.pdf", 'rb'))
-
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-async def command_faq_scholarship_not_pgas(message: types.Message, state: FSMContext):
+async def command_faq_common_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship_1.set()
     await bot.send_message(message.from_user.id, faq_scholarship_common_scholarship_info,
                            reply_markup=back_and_to_main_menu_kb)
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/common_scholarship/Приказ.pdf", 'rb'))
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
@@ -233,9 +234,9 @@ def register_handlers_faq(dp: Dispatcher):
 
     dp.register_message_handler(command_faq_scholarship, Text(equals='Повышенная стипендия', ignore_case=True),
                                 state=FSMfaq.faq_start)
-    dp.register_message_handler(command_faq_scholarship_pgas, Text(equals='ПГАС', ignore_case=True),
+    dp.register_message_handler(command_faq_increased_scholarship, Text(equals='ПГАС', ignore_case=True),
                                 state=FSMfaq.scholarship)
-    dp.register_message_handler(command_faq_scholarship_not_pgas,
+    dp.register_message_handler(command_faq_common_scholarship,
                                 Text(equals='Академическая стипендия', ignore_case=True),
                                 state=FSMfaq.scholarship)
 
