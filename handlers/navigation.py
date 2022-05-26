@@ -15,7 +15,6 @@ from keyboards.main_menu_kbs import *
 
 # словари
 from dicts.graf import graf
-from dicts.implementation import *
 
 #навигационные алгоритмы
 from dicts.implementation import *
@@ -95,7 +94,7 @@ async def command_get_way(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         await bot.send_message(message.from_user.id,
                                "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
-        seacher()
+        came_from = breadth_first_search(example_graph, data['from'], data['to'])
     await FSMnavi.next()
 
 
@@ -155,38 +154,7 @@ def register_handlers_navigation(dp: Dispatcher):
     dp.register_message_handler(command_get_way, state=FSMnavi.pathfinder)
 
 
-class SimpleGraph:
-    def __init__(self):
-        self.edges = {}
-
-    def neighbors(self, id):
-        return self.edges[id]
 
 
-class Queue:
-    def __init__(self):
-        self.elements = collections.deque()
-
-    def empty(self):
-        return len(self.elements) == 0
-
-    def put(self, x):
-        self.elements.append(x)
-
-    def get(self):
-        return self.elements.popleft()
 
 
-def searcher(graph, start):
-    frontier = Queue()
-    frontier.put(start)
-    visited = {}
-    visited[start] = True
-
-    while not frontier.empty():
-        current = frontier.get()
-        print("Visiting %r" % current)
-        for next in graph.neighbors(current):
-            if next not in visited:
-                frontier.put(next)
-                visited[next] = True
