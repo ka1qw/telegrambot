@@ -184,7 +184,7 @@ async def command_faq_dormitory(message: types.Message, state: FSMContext):
 async def command_faq_dormitory_1st(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
     await message.reply(faq_dormitory_1st_info, reply_markup=back_and_to_main_menu_kb,
-                           parse_mode="Markdown")
+                        parse_mode="Markdown")
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
@@ -194,7 +194,7 @@ async def command_faq_dormitory_1st(message: types.Message, state: FSMContext):
 async def command_faq_dormitory_2nd(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
     await message.reply(faq_dormitory_2nd_info, reply_markup=back_and_to_main_menu_kb,
-                           parse_mode="Markdown")
+                        parse_mode="Markdown")
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
@@ -204,7 +204,7 @@ async def command_faq_dormitory_2nd(message: types.Message, state: FSMContext):
 async def command_faq_dormitory_3rd(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
     await message.reply(faq_dormitory_3rd_info, reply_markup=back_and_to_main_menu_kb,
-                           parse_mode="Markdown")
+                        parse_mode="Markdown")
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
@@ -214,7 +214,7 @@ async def command_faq_dormitory_3rd(message: types.Message, state: FSMContext):
 async def command_faq_dormitory_4th(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
     await message.reply(faq_dormitory_4th_info, reply_markup=back_and_to_main_menu_kb,
-                           parse_mode="Markdown")
+                        parse_mode="Markdown")
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
@@ -224,7 +224,7 @@ async def command_faq_dormitory_4th(message: types.Message, state: FSMContext):
 async def command_faq_dormitory_5th(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
     await message.reply(faq_dormitory_5th_info, reply_markup=back_and_to_main_menu_kb,
-                           parse_mode="Markdown")
+                        parse_mode="Markdown")
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
@@ -233,13 +233,14 @@ async def command_faq_dormitory_5th(message: types.Message, state: FSMContext):
 
 async def command_faq_dormitory_pay_info(message: types.Message, state: FSMContext):
     await FSMfaq.dormitory_1.set()
-    await message.reply(faq_dormitory_pay_info,reply_markup=back_and_to_main_menu_kb,parse_mode="Markdown")
+    await message.reply(faq_dormitory_pay_info, reply_markup=back_and_to_main_menu_kb, parse_mode="Markdown")
     # await bot.(message.from_user.id, faq_dormitory_pay_info, reply_markup=back_and_to_main_menu_kb,
     #                        parse_mode="Markdown")
     await bot.send_document(message.from_user.id,
                             document=open('resources/docs/dormitory_pay/Размеры платы за проживание.pdf', 'rb'))
     await bot.send_photo(message.from_user.id,
-                         photo=open('resources/docs/dormitory_pay/Бланк квитанции на оплату.jpg', 'rb'))
+                         open('resources/docs/dormitory_pay/Бланк квитанции на оплату.jpg', 'rb'),
+                         'Квитанция об оплате')
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
