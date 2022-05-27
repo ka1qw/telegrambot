@@ -15,6 +15,10 @@ async def on_startup(message: types.Message):
             await bot.send_message(i, start_phrase, reply_markup=mainMenu_kb)
         except Exception as ex:
             print(f"[ERROR {ex}]: Пользователь с id = {i} не найден!")
+
+
+# async def on_shutdown(message: types.Message):
+#     await bot.send_message('875231826', 'Завершаю работу', reply_markup=mainMenu_kb)
     # сюда подрубим БД с user_id пользователей, которые включили бота, и будем им рассылать сообщение
     # о начале работы бота после перезапуска
     # await bot.send_message(message.from_user.id, "Бот работает!")
