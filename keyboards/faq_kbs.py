@@ -48,6 +48,8 @@ faq_dormitory_choice_2nd_btn = KeyboardButton('Общежитие №2')
 faq_dormitory_choice_3rd_btn = KeyboardButton('Общежитие №3')
 faq_dormitory_choice_4th_btn = KeyboardButton('Общежитие №4')
 faq_dormitory_choice_5th_btn = KeyboardButton('Общежитие №5')
+faq_dormitory_choice_pay_info_btn = KeyboardButton('Оплата проживания')
 faq_dormitory_choice_kb.add(faq_dormitory_choice_1st_btn, faq_dormitory_choice_2nd_btn, faq_dormitory_choice_3rd_btn,
                             faq_dormitory_choice_4th_btn, faq_dormitory_choice_5th_btn)
+faq_dormitory_choice_kb.add(faq_dormitory_choice_pay_info_btn)
 faq_dormitory_choice_kb.add(to_main_menu_btn).insert(back_btn)
