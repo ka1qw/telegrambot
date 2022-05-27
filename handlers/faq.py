@@ -21,17 +21,19 @@ class FSMfaq(StatesGroup):
     # todo: разнообразить ветку со стипендиями, добавить социальную и иностранцам
 
     faq_start = State()
-    holidays = State()  # каникулы
-    addSession = State()  # допса
-    addSession_1 = State()  #
-    addSession_2 = State()  #
+    holidays = State()
+    addSession = State()
+    addSession_1 = State()
+    addSession_2 = State()
     scholarship = State()
     scholarship_1 = State()
-    militaryDep = State()  # военка
+    militaryDep = State()
     militaryDep_1 = State()
+    dormitory = State()
+    dormitory_1 = State()
 
 
-# faq
+# главное меню FAQ
 async def command_faq_start(message: types.Message, state: FSMContext):
     await FSMfaq.faq_start.set()
     await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
@@ -51,7 +53,7 @@ async def command_faq_holidays(message: types.Message):
     await FSMfaq.faq_start.set()
 
 
-# допса
+# допсессия
 async def command_faq_addsession(message: types.Message, state: FSMContext):
     await FSMfaq.addSession.set()
     await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
@@ -90,6 +92,7 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         data['way'].append('addSession_2')
 
 
+# стипендии
 async def command_faq_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship.set()
     await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
@@ -139,6 +142,7 @@ async def command_faq_social_scholarship(message: types.Message, state: FSMConte
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
+# военка
 async def command_faq_military_department_choice(message: types.Message, state: FSMContext):
     await FSMfaq.militaryDep.set()
     await bot.send_message(message.from_user.id, faq_militaryDep_info_choice, reply_markup=faq_militaryDep_choice)
@@ -166,6 +170,61 @@ async def command_faq_military_department_table(message: types.Message, state: F
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
+# общежития
+async def command_faq_dormitory(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_main_info, reply_markup=faq_dormitory_choice_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_dormitory_1st(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory_1.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_1st_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_dormitory_2nd(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory_1.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_2nd_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_dormitory_3rd(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory_1.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_3rd_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_dormitory_4th(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory_1.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_4th_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_dormitory_5th(message: types.Message, state: FSMContext):
+    await FSMfaq.dormitory_1.set()
+    await bot.send_message(message.from_user.id, faq_dormitory_5th_info, reply_markup=back_and_to_main_menu_kb)
+    async with state.proxy() as data:
+        data['way'].append('dormitory_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
 # Выход из состояний
 async def to_start_faq(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
@@ -175,6 +234,7 @@ async def to_start_faq(message: types.Message, state: FSMContext):
     await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
+# кнопка "назад"
 async def on_back_faq(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         current_state = await state.get_state()
@@ -202,6 +262,16 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             await FSMfaq.scholarship_1.set()
             await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
+        elif data['way'][-1] == 'dormitory':
+            await FSMfaq.dormitory.set()
+            await bot.send_message(message.from_user.id, faq_dormitory_main_info,
+                                   reply_markup=faq_dormitory_choice_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
+        elif data['way'][-1] == 'dormitory_1':
+            await FSMfaq.dormitory_1.set()
+            await bot.send_message(message.from_user.id, faq_dormitory_main_info,
+                                   reply_markup=back_and_to_main_menu_kb)
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'militaryDep':
             await FSMfaq.militaryDep.set()
             await bot.send_message(message.from_user.id, faq_militaryDep_info_choice,
@@ -228,10 +298,12 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
+# команда для обработки неизвестных сообщений
 async def unknown_command_faq(message: types.Message):
     await bot.send_message(message.from_user.id, "Неизвестная команда")
 
 
+# регистрация хендлеров
 def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(on_back_faq, Text(equals='Назад', ignore_case=True),
                                 state=[i for i in FSMfaq.all_states])
@@ -256,7 +328,7 @@ def register_handlers_faq(dp: Dispatcher):
                                 Text(equals='Академическая стипендия', ignore_case=True),
                                 state=FSMfaq.scholarship)
     dp.register_message_handler(command_faq_social_scholarship,
-                                Text(equals='Социальная стипендия', ignore_case=True),state=FSMfaq.scholarship)
+                                Text(equals='Социальная стипендия', ignore_case=True), state=FSMfaq.scholarship)
 
     dp.register_message_handler(command_faq_military_department_choice,
                                 Text(equals='Военная кафедра', ignore_case=True),
@@ -267,5 +339,20 @@ def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(command_faq_military_department_table,
                                 Text(equals='Военно-учетный стол', ignore_case=True),
                                 state=FSMfaq.militaryDep)
+
+    dp.register_message_handler(command_faq_dormitory, Text(equals='Общежития', ignore_case=True),
+                                state=FSMfaq.faq_start)
+    dp.register_message_handler(command_faq_dormitory_1st, Text(equals='Общежитие №1', ignore_case=True),
+                                state=FSMfaq.dormitory)
+    dp.register_message_handler(command_faq_dormitory_2nd, Text(equals='Общежитие №2', ignore_case=True),
+                                state=FSMfaq.dormitory)
+    dp.register_message_handler(command_faq_dormitory_3rd, Text(equals='Общежитие №3', ignore_case=True),
+                                state=FSMfaq.dormitory)
+    dp.register_message_handler(command_faq_dormitory_4th, Text(equals='Общежитие №4', ignore_case=True),
+                                state=FSMfaq.dormitory)
+    dp.register_message_handler(command_faq_dormitory_5th, Text(equals='Общежитие №5', ignore_case=True),
+                                state=FSMfaq.dormitory)
+
+
     # должна быть в конце
     dp.register_message_handler(unknown_command_faq, state=[i for i in FSMfaq.all_states])

@@ -52,3 +52,10 @@ faq_militaryDep_info_table = "Адрес военно-мобилизационн
                              "\nПонедельник, вторник -10.00-12.00  и 14.00-16.00" \
                              "\nСреда - приема нет" \
                              "\nЧетверг, пятница-10.00-12.00 и 14.00-16.00"
+
+faq_dormitory_main_info = 'Инфа про общежития'
+faq_dormitory_1st_info = 'Инфа про 1 общагу'
+faq_dormitory_2nd_info = 'Инфа про 2 общагу'
+faq_dormitory_3rd_info = 'Инфа про 3 общагу'
+faq_dormitory_4th_info = 'Инфа про 4 общагу'
+faq_dormitory_5th_info = 'Инфа про 5 общагу'
