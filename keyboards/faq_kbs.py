@@ -53,3 +53,13 @@ faq_dormitory_choice_kb.add(faq_dormitory_choice_1st_btn, faq_dormitory_choice_2
                             faq_dormitory_choice_4th_btn, faq_dormitory_choice_5th_btn)
 faq_dormitory_choice_kb.add(faq_dormitory_choice_pay_info_btn)
 faq_dormitory_choice_kb.add(to_main_menu_btn).insert(back_btn)
+
+faq_holidays_choice_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+faq_holidays_summer = KeyboardButton('Летние каникулы')
+faq_holidays_winter = KeyboardButton('Зимние каникулы')
+faq_holidays_choice_kb.add(faq_holidays_summer, faq_holidays_winter)
+
+faq_addSession_department_group_input_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу :(")
+faq_addSession_department_group_input_kb.add(faq_addSession_know_dec_btn)
+faq_addSession_department_group_input_kb.add(to_main_menu_btn).insert(back_btn)

@@ -22,6 +22,7 @@ class FSMfaq(StatesGroup):
 
     faq_start = State()
     holidays = State()
+    holidays_1 = State()
     addSession = State()
     addSession_1 = State()
     addSession_2 = State()
@@ -45,12 +46,35 @@ async def command_faq_start(message: types.Message, state: FSMContext):
 
 
 # каникулы
-async def command_faq_holidays(message: types.Message):
+async def command_faq_holidays_choice_group(message: types.Message, state: FSMContext):
     await FSMfaq.holidays.set()
-    await bot.send_message(message.from_user.id, faq_holiday_info)
-    # async with state.proxy() as data:
-    #     data['way'].append('holidays')
-    await FSMfaq.faq_start.set()
+    await bot.send_message(message.from_user.id, faq_holiday_info,
+                           reply_markup=faq_addSession_department_group_input_kb,
+                           parse_mode="Markdown")
+    async with state.proxy() as data:
+        data['way'].append('holidays')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_holidays_group_input(message: types.Message, state: FSMContext):
+    if message.text == "Я не знаю свою группу :(":
+        await FSMfaq.holidays_1.set()
+        await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
+    elif message.text in [i[0] for i in groups.items()]:
+        await FSMfaq.holidays_1.set()
+        async with state.proxy() as data:
+            data['way'].append('holidays_1')
+            print(f"Ветка состояний: {data['way']}")
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            data['group'] = message.text
+            await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
+                                                         f'Летние каникулы: {groups.get(message.text).get("summer_holidays")}\n'
+                                                         f'Зимние каникулы: {groups.get(message.text).get("winter_holidays")}',
+                                   reply_markup=back_and_to_main_menu_kb)
+    elif message.text not in [i[0] for i in groups.items()]:
+        await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
+                               reply_markup=faq_addSession_department_group_input_kb_without_back_btn)
 
 
 # допсессия
@@ -78,18 +102,19 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         await FSMfaq.addSession_2.set()
         await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
+        await FSMfaq.addSession_2.set()
         async with state.proxy() as data:
+            data['way'].append('addSession_2')
+            print(f"Ветка состояний: {data['way']}")
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
             data['group'] = message.text
-            # todo: реализовать выдачу пути к деканату, связать с навигацией
-
             await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
                                                          f'Твой деканат: деканат факультета/института '
-                                                         f'{groups.get(message.text).get("department")}')
+                                                         f'{groups.get(message.text).get("Institute")}',
+                                   reply_markup=back_and_to_main_menu_kb)
     elif message.text not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
                                reply_markup=faq_addSession_department_group_input_kb_without_back_btn)
-    async with state.proxy() as data:
-        data['way'].append('addSession_2')
 
 
 # стипендии
@@ -273,8 +298,9 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'holidays':
-            await FSMfaq.faq_start.set()
-            await bot.send_message(message.from_user.id, faq_holiday_info, reply_markup=faq_main_kb)
+            await FSMfaq.holidays.set()
+            await bot.send_message(message.from_user.id, faq_holiday_info,
+                                   reply_markup=faq_addSession_department_group_input_kb, parse_mode='Markdown')
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'scholarship':
             await FSMfaq.scholarship.set()
@@ -332,15 +358,16 @@ def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(to_start_faq, Text(equals='Вернуться на главный экран', ignore_case=True),
                                 state=[i for i in FSMfaq.all_states])
     dp.register_message_handler(command_faq_start, Text(equals='FAQ', ignore_case=True), state=None)
-    dp.register_message_handler(command_faq_holidays, Text(equals='Информация о каникулах', ignore_case=True),
+    dp.register_message_handler(command_faq_holidays_choice_group,
+                                Text(equals='Информация о каникулах', ignore_case=True),
                                 state=FSMfaq.faq_start)
+    dp.register_message_handler(command_faq_holidays_group_input, state=FSMfaq.holidays)
     dp.register_message_handler(command_faq_addsession, Text(equals='Дополнительная сессия', ignore_case=True),
                                 state=FSMfaq.faq_start)
     dp.register_message_handler(command_faq_addsession_department_choice,
                                 Text(equals='Какой у меня деканат?', ignore_case=True),
                                 state=FSMfaq.addSession)
-    dp.register_message_handler(command_faq_addsession_group_input,
-                                state=FSMfaq.addSession_1)
+    dp.register_message_handler(command_faq_addsession_group_input, state=FSMfaq.addSession_1)
 
     dp.register_message_handler(command_faq_scholarship, Text(equals='Стипендия', ignore_case=True),
                                 state=FSMfaq.faq_start)
