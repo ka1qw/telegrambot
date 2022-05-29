@@ -55,6 +55,7 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
     await bot.send_message(message.from_user.id, faq_holiday_info_individual,
                            reply_markup=faq_addSession_department_group_input_kb,
                            parse_mode="Markdown")
+    print('lol')
     async with state.proxy() as data:
         data['way'].append('holidays')
         print(f"Ветка состояний: {data['way']}")
