@@ -25,7 +25,7 @@ faq_addSession_choice.add(faq_addSession_department_btn)
 faq_addSession_choice.add(to_main_menu_btn).insert(back_btn)
 
 faq_addSession_department_group_input_kb = ReplyKeyboardMarkup(resize_keyboard=True)
-faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу :(")
+faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу")
 faq_addSession_department_group_input_kb.add(faq_addSession_know_dec_btn)
 faq_addSession_department_group_input_kb.add(to_main_menu_btn).insert(back_btn)
 
@@ -60,6 +60,6 @@ faq_holidays_winter = KeyboardButton('Зимние каникулы')
 faq_holidays_choice_kb.add(faq_holidays_summer, faq_holidays_winter)
 
 faq_addSession_department_group_input_kb = ReplyKeyboardMarkup(resize_keyboard=True)
-faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу :(")
+faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу")
 faq_addSession_department_group_input_kb.add(faq_addSession_know_dec_btn)
 faq_addSession_department_group_input_kb.add(to_main_menu_btn).insert(back_btn)

@@ -16,6 +16,9 @@ from keyboards.faq_kbs import *
 from keyboards.common_kbs_and_btns import *
 from keyboards.main_menu_kbs import *
 
+# эмодзи
+import emoji
+
 
 class FSMfaq(StatesGroup):
     # todo: разнообразить ветку со стипендиями, добавить социальную и иностранцам
@@ -48,7 +51,8 @@ async def command_faq_start(message: types.Message, state: FSMContext):
 # каникулы
 async def command_faq_holidays_choice_group(message: types.Message, state: FSMContext):
     await FSMfaq.holidays.set()
-    await bot.send_message(message.from_user.id, faq_holiday_info,
+    await bot.send_message(message.from_user.id, faq_holiday_main_info)
+    await bot.send_message(message.from_user.id, faq_holiday_info_individual,
                            reply_markup=faq_addSession_department_group_input_kb,
                            parse_mode="Markdown")
     async with state.proxy() as data:
@@ -58,7 +62,7 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
 
 
 async def command_faq_holidays_group_input(message: types.Message, state: FSMContext):
-    if message.text == "Я не знаю свою группу :(":
+    if message.text == "Я не знаю свою группу":
         await FSMfaq.holidays_1.set()
         await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
@@ -68,9 +72,9 @@ async def command_faq_holidays_group_input(message: types.Message, state: FSMCon
             print(f"Ветка состояний: {data['way']}")
             print(f"Нынешнее состояние: {await state.get_state()}\n")
             data['group'] = message.text
-            await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
-                                                         f'Летние каникулы: {groups.get(message.text).get("summer_holidays")}\n'
-                                                         f'Зимние каникулы: {groups.get(message.text).get("winter_holidays")}',
+            await bot.send_message(message.from_user.id, emoji.emojize(f'Твоя группа: {data["group"]}\n'
+                                                                       f':sunflower: Летние каникулы: {groups.get(message.text).get("summer_holidays")}\n'
+                                                                       f':snowflake: Зимние каникулы: {groups.get(message.text).get("winter_holidays")}'),
                                    reply_markup=back_and_to_main_menu_kb)
     elif message.text not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
@@ -98,7 +102,7 @@ async def command_faq_addsession_department_choice(message: types.Message, state
 
 
 async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
-    if message.text == "Я не знаю свою группу :(":
+    if message.text == "Я не знаю свою группу":
         await FSMfaq.addSession_2.set()
         await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
@@ -299,7 +303,8 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'holidays':
             await FSMfaq.holidays.set()
-            await bot.send_message(message.from_user.id, faq_holiday_info,
+            await bot.send_message(message.from_user.id, faq_holiday_main_info)
+            await bot.send_message(message.from_user.id, faq_holiday_info_individual,
                                    reply_markup=faq_addSession_department_group_input_kb, parse_mode='Markdown')
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'scholarship':
