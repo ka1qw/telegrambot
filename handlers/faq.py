@@ -29,6 +29,7 @@ class FSMfaq(StatesGroup):
     addSession = State()
     addSession_1 = State()
     addSession_2 = State()
+    addSession_3 = State()
     scholarship = State()
     scholarship_1 = State()
     militaryDep = State()
@@ -42,7 +43,6 @@ async def command_faq_start(message: types.Message, state: FSMContext):
     await FSMfaq.faq_start.set()
     await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
     async with state.proxy() as data:
-        # data['way'].clear
         data['way'] = ['faq_start']
         print(f"Ветка состояний: {data['way']}")
         print(f"Нынешнее состояние: {await state.get_state()}\n")
@@ -55,7 +55,6 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
     await bot.send_message(message.from_user.id, faq_holiday_info_individual,
                            reply_markup=faq_addSession_department_group_input_kb,
                            parse_mode="Markdown")
-    print('lol')
     async with state.proxy() as data:
         data['way'].append('holidays')
         print(f"Ветка состояний: {data['way']}")
@@ -65,6 +64,8 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
 async def command_faq_holidays_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу":
         await FSMfaq.holidays_1.set()
+        async with state.proxy() as data:
+            print(f"Нынешнее состояние: {await state.get_state()}\n")
         await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
                                reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
@@ -84,34 +85,52 @@ async def command_faq_holidays_group_input(message: types.Message, state: FSMCon
 
 
 # допсессия
-async def command_faq_addsession(message: types.Message, state: FSMContext):
+async def command_faq_session(message: types.Message, state: FSMContext):
     await FSMfaq.addSession.set()
-    await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
+    await bot.send_message(message.from_user.id, faq_session_main_info, reply_markup=faq_session_kb)
     async with state.proxy() as data:
         data['way'].append('addSession')
         print(f"Ветка состояний: {data['way']}")
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
-async def command_faq_addsession_department_choice(message: types.Message, state: FSMContext):
+async def command_faq_common_session(message: types.Message, state: FSMContext):
     await FSMfaq.addSession_1.set()
-    await bot.send_message(message.from_user.id, faq_addSession_department_info,
-                           reply_markup=faq_addSession_department_group_input_kb)
+    await bot.send_message(message.from_user.id, faq_common_session_info, reply_markup=back_and_to_main_menu_kb)
     async with state.proxy() as data:
         data['way'].append('addSession_1')
         print(f"Ветка состояний: {data['way']}")
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
+async def command_faq_add_session(message: types.Message, state: FSMContext):
+    await FSMfaq.addSession_1.set()
+    await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice_kb)
+    async with state.proxy() as data:
+        data['way'].append('addSession_1')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
+async def command_faq_addsession_department_choice(message: types.Message, state: FSMContext):
+    await FSMfaq.addSession_2.set()
+    await bot.send_message(message.from_user.id, faq_addSession_department_info,
+                           reply_markup=faq_addSession_department_group_input_kb)
+    async with state.proxy() as data:
+        data['way'].append('addSession_2')
+        print(f"Ветка состояний: {data['way']}")
+        print(f"Нынешнее состояние: {await state.get_state()}\n")
+
+
 async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу":
-        await FSMfaq.addSession_2.set()
+        await FSMfaq.addSession_3.set()
         await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
                                reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
-        await FSMfaq.addSession_2.set()
+        await FSMfaq.addSession_3.set()
         async with state.proxy() as data:
-            data['way'].append('addSession_2')
+            data['way'].append('addSession_3')
             print(f"Ветка состояний: {data['way']}")
             print(f"Нынешнее состояние: {await state.get_state()}\n")
             data['group'] = message.text
@@ -285,6 +304,7 @@ async def to_start_faq(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
+    print(f"Нынешнее состояние: {await state.get_state()}\n")
     await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
@@ -340,17 +360,17 @@ async def on_back_faq(message: types.Message, state: FSMContext):
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession':
             await FSMfaq.addSession.set()
-            await bot.send_message(message.from_user.id, faq_addSession_info, reply_markup=faq_addSession_choice)
+            await bot.send_message(message.from_user.id, faq_session_main_info, reply_markup=faq_session_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession_1':
             await FSMfaq.addSession_1.set()
-            await bot.send_message(message.from_user.id, faq_addSession_department_info,
-                                   reply_markup=faq_addSession_department_group_input_kb)
+            await bot.send_message(message.from_user.id, faq_addSession_info,
+                                   reply_markup=faq_addSession_choice_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
         elif data['way'][-1] == 'addSession_2':
             await FSMfaq.addSession_2.set()
             await bot.send_message(message.from_user.id, faq_addSession_department_info,
-                                   reply_markup=back_and_to_main_menu_kb)
+                                   reply_markup=faq_addSession_department_group_input_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
 
 
@@ -367,15 +387,22 @@ def register_handlers_faq(dp: Dispatcher):
                                 state=[i for i in FSMfaq.all_states])
     dp.register_message_handler(command_faq_start, Text(equals='FAQ', ignore_case=True), state=None)
     dp.register_message_handler(command_faq_holidays_choice_group,
-                                Text(equals='Информация о каникулах', ignore_case=True),
+                                Text(equals='Каникулы', ignore_case=True),
                                 state=FSMfaq.faq_start)
     dp.register_message_handler(command_faq_holidays_group_input, state=FSMfaq.holidays)
-    dp.register_message_handler(command_faq_addsession, Text(equals='Дополнительная сессия', ignore_case=True),
+
+    dp.register_message_handler(command_faq_session, Text(equals='Сессия', ignore_case=True),
                                 state=FSMfaq.faq_start)
+    #######
+    dp.register_message_handler(command_faq_common_session, Text(equals='Обычная сессия', ignore_case=True),
+                                state=FSMfaq.addSession)
+    dp.register_message_handler(command_faq_add_session, Text(equals='Дополнительная сессия', ignore_case=True),
+                                state=FSMfaq.addSession)
+    #######
     dp.register_message_handler(command_faq_addsession_department_choice,
                                 Text(equals='Какой у меня деканат?', ignore_case=True),
-                                state=FSMfaq.addSession)
-    dp.register_message_handler(command_faq_addsession_group_input, state=FSMfaq.addSession_1)
+                                state=FSMfaq.addSession_1)
+    dp.register_message_handler(command_faq_addsession_group_input, state=FSMfaq.addSession_2)
 
     dp.register_message_handler(command_faq_scholarship, Text(equals='Стипендия', ignore_case=True),
                                 state=FSMfaq.faq_start)

@@ -3,8 +3,8 @@ from keyboards.common_kbs_and_btns import to_main_menu_btn, back_btn
 
 '''--------------------------------FAQ--------------------------------'''
 faq_main_kb = ReplyKeyboardMarkup(resize_keyboard=True)
-faq_holiday_btn = KeyboardButton('Информация о каникулах')
-faq_addSession_btn = KeyboardButton('Дополнительная сессия')
+faq_holiday_btn = KeyboardButton('Каникулы')
+faq_addSession_btn = KeyboardButton('Сессия')
 faq_scholarship_btn = KeyboardButton('Стипендия')
 faq_militaryDep_btn = KeyboardButton('Военная кафедра')
 faq_dormitory_btn = KeyboardButton('Общежития')
@@ -19,10 +19,16 @@ faq_militaryDep_table_btn = KeyboardButton("Военно-учетный стол
 faq_militaryDep_choice.add(faq_militaryDep_centre_btn).insert(faq_militaryDep_table_btn).add(to_main_menu_btn).insert(
     back_btn)
 
-faq_addSession_choice = ReplyKeyboardMarkup(resize_keyboard=True)
+faq_session_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+faq_session_common_btn = KeyboardButton('Обычная сессия')
+faq_session_add_btn = KeyboardButton('Дополнительная сессия')
+faq_session_kb.add(faq_session_common_btn,faq_session_add_btn)
+faq_session_kb.add(to_main_menu_btn,back_btn)
+
+faq_addSession_choice_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 faq_addSession_department_btn = KeyboardButton("Какой у меня деканат?")
-faq_addSession_choice.add(faq_addSession_department_btn)
-faq_addSession_choice.add(to_main_menu_btn).insert(back_btn)
+faq_addSession_choice_kb.add(faq_addSession_department_btn)
+faq_addSession_choice_kb.add(to_main_menu_btn).insert(back_btn)
 
 faq_addSession_department_group_input_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 faq_addSession_know_dec_btn = KeyboardButton("Я не знаю свою группу")
