@@ -43,7 +43,7 @@ async def command_faq_start(message: types.Message, state: FSMContext):
     await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
     async with state.proxy() as data:
         # data['way'].clear
-        data['way'] = ['start']
+        data['way'] = ['faq_start']
         print(f"Ветка состояний: {data['way']}")
         print(f"Нынешнее состояние: {await state.get_state()}\n")
 
@@ -299,7 +299,7 @@ async def on_back_faq(message: types.Message, state: FSMContext):
                 return
             await state.finish()
             await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
-        elif data['way'][-1] == 'start':
+        elif data['way'][-1] == 'faq_start':
             await FSMfaq.faq_start.set()
             await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
             print(f"Нынешнее состояние: {await state.get_state()}\n")
