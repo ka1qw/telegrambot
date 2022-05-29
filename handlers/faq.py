@@ -64,7 +64,8 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
 async def command_faq_holidays_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу":
         await FSMfaq.holidays_1.set()
-        await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
+        await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
+                               reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
         await FSMfaq.holidays_1.set()
         async with state.proxy() as data:
@@ -104,7 +105,8 @@ async def command_faq_addsession_department_choice(message: types.Message, state
 async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу":
         await FSMfaq.addSession_2.set()
-        await bot.send_message(message.from_user.id, faq_addSession_group_info, reply_markup=only_to_main_menu_kb)
+        await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
+                               reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
         await FSMfaq.addSession_2.set()
         async with state.proxy() as data:
