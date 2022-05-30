@@ -18,8 +18,10 @@ from dicts.graf import graf
 
 #навигационные алгоритмы
 from dicts.implementation import *
+
 example_graph = SimpleGraph()
 example_graph.edges = graf
+
 
 
 class FSMnavi(StatesGroup):
@@ -94,7 +96,13 @@ async def command_get_way(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         await bot.send_message(message.from_user.id,
                                "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
-        came_from = breadth_first_search(example_graph, data['from'], data['to'])
+        came_from, cost_so_far = dijkstra_search(example_graph, data['from'], data['to'])
+
+        path = reconstruct_path(came_from, data['from'], data['to'])
+
+        for next in path:
+            print(next)
+
     await FSMnavi.next()
 
 
@@ -152,6 +160,8 @@ def register_handlers_navigation(dp: Dispatcher):
                                 state=FSMnavi.navigation_start)
     dp.register_message_handler(command_place_now_get, state=FSMnavi.place_now)
     dp.register_message_handler(command_get_way, state=FSMnavi.pathfinder)
+
+
 
 
 
