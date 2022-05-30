@@ -101,7 +101,8 @@ async def command_get_way(message: types.Message, state: FSMContext):
         path = reconstruct_path(came_from, data['from'], data['to'])
 
         for next in path:
-            print(next)
+            await bot.send_message(message.from_user.id,
+                                   "Перейдите к " + str(next))
 
     await FSMnavi.next()
 
