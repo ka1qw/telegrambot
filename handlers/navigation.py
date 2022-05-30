@@ -104,6 +104,10 @@ async def command_get_way(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id,
                                    "Перейдите к " + str(next))
 
+        #отладка графа
+        #came_from_2 = breadth_first_search_1(example_graph, data['from'])
+
+
     await FSMnavi.next()
 
 
