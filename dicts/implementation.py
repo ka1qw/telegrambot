@@ -109,4 +109,48 @@ def breadth_first_search_1(graph, start):
                 frontier.put(next)
                 visited[next] = True
 
+def path_auditorium(path):
+    new_path = []
+    for next in path:
+        if next[0].isnumeric() == True:
+            new_path.append("Подойдите к аудитории " + str(next))
+        elif next.find("Проход") != -1:
+            new_path.append("Пройдите через коридор")
+        elif next.find("Арка") != -1:
+            new_path.append("Пройдите в арку")
+        elif next.find("Дверь по левой стене") != -1:
+            new_path.append("Войдите в дверь по левой стене")
+        else:
+            new_path.append(str(next))
 
+    for i in range(len(new_path)-1):
+        if (new_path[i].lower().find("лестница") != -1) and (new_path[i+1].lower().find("лестница") != -1):
+            if int(new_path[i][new_path[i].find("лестница")+9]) > int(new_path[i+1][new_path[i+1].find("лестница")+9]):
+                new_path.pop(i)
+                new_path.insert(i, "Выйдите на лестницу")
+                to_path_string = "Спуститесь на " + (new_path[i+1][new_path[i+1].find("лестница") + 9]) + " этаж"
+                new_path.pop(i + 1)
+                new_path.insert(i+1, to_path_string)
+            else:
+                new_path.pop(i)
+                new_path.insert(i, "Выйдите на лестницу")
+                to_path_string = "Поднимитесь на " + (new_path[i+1][new_path[i+1].find("лестница") + 9]) + " этаж"
+                new_path.pop(i + 1)
+                new_path.insert(i+1, to_path_string)
+
+    for i in range(len(new_path)-1):
+        if new_path[i].find("0 этаж") != -1:
+            new_path.pop(i)
+            new_path.insert(i, "Cпуститесь на цокольный этаж")
+
+    for i in range(len(new_path)-1):
+        if new_path[i] == "Пройдите через коридор" and new_path[i+1] == "Войдите в дверь по левой стене":
+            new_path.pop(i)
+            new_path.pop(i+1)
+            new_path.insert(i, "Выйдите через дверь в конце коридора")
+        if (new_path[i].lower().find("лестница") != -1):
+            new_path.pop(i)
+            new_path.insert(i, "Подойдите к лестнице")
+
+
+    return new_path

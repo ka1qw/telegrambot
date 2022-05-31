@@ -93,6 +93,9 @@ async def command_get_way(message: types.Message, state: FSMContext):
         data['way'].append('get_way')
     ##Функция поиска пути
     ##Вывод результата
+
+    #check = check_points(data['from'], data['to'])
+
     async with state.proxy() as data:
         await bot.send_message(message.from_user.id,
                                "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
@@ -100,10 +103,11 @@ async def command_get_way(message: types.Message, state: FSMContext):
 
         path = reconstruct_path(came_from, data['from'], data['to'])
 
-        for next in path:
-            await bot.send_message(message.from_user.id,
-                                   "Перейдите к " + str(next))
+        new_path = path_auditorium(path)
 
+        for next in new_path:
+            await bot.send_message(message.from_user.id, str(next))
+        await bot.send_message(message.from_user.id, "Маршрут завершен")
         #отладка графа
         #came_from_2 = breadth_first_search_1(example_graph, data['from'])
 
