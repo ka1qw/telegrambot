@@ -152,5 +152,18 @@ def path_auditorium(path):
             new_path.pop(i)
             new_path.insert(i, "Подойдите к лестнице")
 
-
     return new_path
+
+
+def check_points(data_from, data_to, graf):
+    keys_graf = graf.keys()
+    if (data_from in keys_graf) and (data_to in keys_graf):
+        check_result = "Маршрут построен"
+    elif (data_from in keys_graf) and (data_to not in keys_graf):
+        check_result = "Местоназначение введено неправильно"
+    elif (data_from not in keys_graf) and (data_to in keys_graf):
+        check_result = "Ваше местоположение введено неправильно"
+    else:
+        check_result = "Вы меня что, сломать пытаетесь?"
+
+    return check_result

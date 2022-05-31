@@ -94,24 +94,26 @@ async def command_get_way(message: types.Message, state: FSMContext):
     ##Функция поиска пути
     ##Вывод результата
 
-    #check = check_points(data['from'], data['to'])
+    check_result = check_points(data['from'], data['to'], graf)
 
-    async with state.proxy() as data:
-        await bot.send_message(message.from_user.id,
-                               "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
-        came_from, cost_so_far = dijkstra_search(example_graph, data['from'], data['to'])
+    if check_result == "Маршрут построен":
+        async with state.proxy() as data:
+            await bot.send_message(message.from_user.id, "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+            await bot.send_message(message.from_user.id, str(check_result))
+            came_from, cost_so_far = dijkstra_search(example_graph, data['from'], data['to'])
 
-        path = reconstruct_path(came_from, data['from'], data['to'])
+            path = reconstruct_path(came_from, data['from'], data['to'])
 
-        new_path = path_auditorium(path)
+            new_path = path_auditorium(path)
 
-        for next in new_path:
-            await bot.send_message(message.from_user.id, str(next))
-        await bot.send_message(message.from_user.id, "Маршрут завершен")
-        #отладка графа
-        #came_from_2 = breadth_first_search_1(example_graph, data['from'])
-
-
+            for next in new_path:
+                await bot.send_message(message.from_user.id, str(next))
+            await bot.send_message(message.from_user.id, "Маршрут завершен")
+           #отладка графа
+           #came_from_2 = breadth_first_search_1(example_graph, data['from'])
+    else:
+        await bot.send_message(message.from_user.id, str(check_result))
+        await bot.send_message(message.from_user.id, "Попробуйте еще раз")
     await FSMnavi.next()
 
 
