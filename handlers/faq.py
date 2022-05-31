@@ -172,7 +172,7 @@ async def command_faq_common_scholarship(message: types.Message, state: FSMConte
     await bot.send_message(message.from_user.id, faq_scholarship_common_scholarship_info,
                            reply_markup=back_and_to_main_menu_kb)
     await bot.send_document(message.from_user.id,
-                            document=open("resources/docs/common_scholarship/Приказ.pdf", 'rb'))
+                            document=open("resources/docs/common_scholarship/Приказ о размере стипендий.pdf", 'rb'))
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
@@ -182,9 +182,11 @@ async def command_faq_common_scholarship(message: types.Message, state: FSMConte
 async def command_faq_social_scholarship(message: types.Message, state: FSMContext):
     await FSMfaq.scholarship_1.set()
     await bot.send_message(message.from_user.id, faq_scholarship_social_scholarship_info,
-                           reply_markup=back_and_to_main_menu_kb)
-    # await bot.send_document(message.from_user.id,
-    #                         document=open("resources/docs/common_scholarship/Приказ.pdf", 'rb'))
+                           reply_markup=back_and_to_main_menu_kb,parse_mode="Markdown")
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/social_scholarship/Положение о назначении стипендий.pdf",'rb'))
+    await bot.send_document(message.from_user.id,
+                            document=open("resources/docs/common_scholarship/Приказ о размере стипендий.pdf", 'rb'))
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
