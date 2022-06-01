@@ -17,7 +17,7 @@ from keyboards.main_menu_kbs import *
 from dicts.graf import graf
 
 #навигационные алгоритмы
-from dicts.implementation import *
+from repository.implementation import *
 
 example_graph = SimpleGraph()
 example_graph.edges = graf
