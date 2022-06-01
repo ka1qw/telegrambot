@@ -26,16 +26,6 @@ class Queue:
     def get(self):
         return self.elements.popleft()
 
-
-class GridWithWeights(SimpleGraph):
-    def __init__(self, width, height):
-        super().__init__(width, height)
-        self.weights = {}
-
-    def cost(self, from_node, to_node):
-        return self.weights.get(to_node, 1)
-
-
 import heapq
 
 
