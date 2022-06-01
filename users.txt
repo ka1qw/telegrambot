@@ -1,4 +1,4 @@
-875231826:{'id': 875231826, 'is_bot': False, 'first_name': 'Alexander', 'username': 'yuppy324', 'language_code': 'ru'}
-315282664:{'id': 315282664, 'is_bot': False, 'first_name': 'настюшка', 'username': 'nnastushkinss', 'language_code': 'ru'}
-856494890:{'id': 856494890, 'is_bot': False, 'first_name': 'Алена', 'username': 'banankinz', 'language_code': 'ru'}
-725104382:{'id': 725104382, 'is_bot': False, 'first_name': 'Люся', 'language_code': 'ru'}
+875231826
+315282664
+856494890
+725104382
