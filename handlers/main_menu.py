@@ -37,7 +37,7 @@ async def command_start(message: types.Message):
 
 # возврат на главный экран
 async def command_to_menu(message: types.Message):
-    await bot.send_message(message.from_user.id, "Возвращаю на главный экран", reply_markup=mainMenu_kb)
+    await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
 def register_handlers_client(dp: Dispatcher):

@@ -122,7 +122,7 @@ async def to_start(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await bot.send_message(message.from_user.id, "Окей, на главную", reply_markup=mainMenu_kb)
+    await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
 async def on_back(message: types.Message, state: FSMContext):
@@ -135,7 +135,7 @@ async def on_back(message: types.Message, state: FSMContext):
             if current_state is None:
                 return
             await state.finish()
-            await bot.send_message(message.from_user.id, "Окей, на главную", reply_markup=mainMenu_kb)
+            await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
         elif data['way'][-1] == 'start':
             await FSMnavi.navigation_start.set()
             await bot.send_message(message.from_user.id, navigation_start_phrase, reply_markup=navigation_kb)
