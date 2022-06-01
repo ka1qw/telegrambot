@@ -132,10 +132,12 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
             print(f"Ветка состояний: {data['way']}")
             print(f"Нынешнее состояние: {await state.get_state()}\n")
             data['group'] = message.text
-            await bot.send_message(message.from_user.id, f'Твоя группа: {data["group"]}\n'
-                                                         f'Твой деканат: деканат факультета/института '
-                                                         f'{groups.get(message.text).get("Institute")}',
-                                   reply_markup=back_and_to_main_menu_kb)
+            await bot.send_message(message.from_user.id, f'*Твоя группа:* {data["group"]}\n'
+                                                         f'*Твой деканат:* деканат факультета/института '
+                                                         f'{groups.get(message.text).get("Institute")}.\n\n'
+                                                         f'Если ты не знаешь, как до него добраться, воспользуйся разделом'
+                                                         f' *"Навигация по корпусу"* на главном экране.',
+                                   reply_markup=back_and_to_main_menu_kb, parse_mode='Markdown')
     elif message.text not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
                                reply_markup=faq_addSession_department_group_input_kb_without_back_btn)

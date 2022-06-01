@@ -14,9 +14,6 @@ from keyboards.main_menu_kbs import *
 async def command_start(message: types.Message):
     try:
         user_id = str(message.from_user.id)
-        username = str(message.from_user.username)
-        user_fullname = str(message.from_user.full_name)
-        info = str(message.from_user.values)
         k = []
         await bot.send_message(message.from_user.id, start_phrase, reply_markup=mainMenu_kb)
         # await message.delete()
@@ -26,7 +23,7 @@ async def command_start(message: types.Message):
                 k.append(str(a[0]))
         with open("users.txt", 'a') as user_data:
             if str(message.from_user.id) not in k:
-                user_data.write(user_id + ':' + info + '\n')
+                user_data.write(user_id + '\n')
         print(k)
         k.clear()
     except FileNotFoundError:
@@ -37,7 +34,7 @@ async def command_start(message: types.Message):
 
 # возврат на главный экран
 async def command_to_menu(message: types.Message):
-    await bot.send_message(message.from_user.id, "Возвращаю на главный экран", reply_markup=mainMenu_kb)
+    await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
 def register_handlers_client(dp: Dispatcher):
