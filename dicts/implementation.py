@@ -151,7 +151,13 @@ def path_auditorium(path):
         if (new_path[i].lower().find("лестница") != -1):
             new_path.pop(i)
             new_path.insert(i, "Подойдите к лестнице")
-
+        if (((new_path[i] == "Центральный вход") or (new_path[i] == "Левый вход")) and (new_path[i+1] == "Внутренний двор")):
+            new_path.pop(i)
+            new_path.pop(i + 1)
+            new_path.insert(i, "Выйдите во внутренний двор")
+        if new_path[i] == "Выйдите во внутренний двор" and new_path[i+1] == "Внутренний двор":
+            new_path.pop(i+1)
+            new_path.insert(i+1, "Войдите в дверь основного здания")
     return new_path
 
 
