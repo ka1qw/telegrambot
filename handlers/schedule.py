@@ -24,13 +24,10 @@ async def schedule_start(message: types.Message, state: FSMContext):
     await bot.send_message(message.from_user.id, schedule_start_phrase, reply_markup=schedule_keyboard)
 
     async with state.proxy() as data:
-        data['spring_scheds'], data['autumn_scheds'] = pars_all()
+        data['way'] = ['start']
 
-    # for key in data['spring_scheds']:
-    #     print("Весна", key, "-----", data['spring_scheds'][key])
-    #
-    # for key in data['autumn_scheds']:
-    #     print("Осень", key, "-----", data['autumn_scheds'][key])
+    async with state.proxy() as data:
+        data['spring_scheds'], data['autumn_scheds'] = pars_all()
 
     if len(data['autumn_scheds']) > 0:
         async with state.proxy() as data:
@@ -49,19 +46,31 @@ async def schedule_start(message: types.Message, state: FSMContext):
 async def schedule_pick_season(message: types.Message, state: FSMContext):
     await FSM_schedule.next()
     async with state.proxy() as data:
+        data['way'].append('pick_season')
+    async with state.proxy() as data:
         data['faculty'] = message.text
     async with state.proxy() as data:
-        if data['Autumn'] == True and data['Spring'] == True:
+        if data['Autumn'] is True and data['Spring'] is True:
             await bot.send_message(message.from_user.id, schedule_pick_season_as, reply_markup=schedule_keyboard_season_as)
-        elif data['Autumn'] == True and data['Spring'] == False:
+            data['phrase'] = schedule_pick_season_as
+            data['keyboard'] = schedule_keyboard_season_as
+        elif data['Autumn'] is True and data['Spring'] is False:
             await bot.send_message(message.from_user.id, schedule_pick_season_a, reply_markup=schedule_keyboard_season_a)
-        elif data['Autumn'] == False and data['Spring'] == True:
+            data['phrase'] = schedule_pick_season_a
+            data['keyboard'] = schedule_keyboard_season_a
+        elif data['Autumn'] is False and data['Spring'] is True:
             await bot.send_message(message.from_user.id, schedule_pick_season_s, reply_markup=schedule_keyboard_season_s)
+            data['phrase'] = schedule_pick_season_a
+            data['keyboard'] = schedule_keyboard_season_s
         else:
             await bot.send_message(message.from_user.id, schedule_pick_season_no_sch, reply_markup=schedule_keyboard_season_no_sch)
+            data['phrase'] = schedule_pick_season_no_sch
+            data['keyboard'] = schedule_keyboard_season_no_sch
 
 async def give_docs(message: types.Message, state: FSMContext):
     await FSM_schedule.next()
+    async with state.proxy() as data:
+        data['way'].append('give_docs')
     async with state.proxy() as data:
         data['season'] = message.text
         data['faculty'] = change_faculty_name(data['faculty'])
@@ -72,8 +81,36 @@ async def give_docs(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id,"Ссылка на скачивание документа: "+ url + str(data['spring_scheds'].get(data['faculty'])), reply_markup=schedule_keyboard_season_no_sch)
 
 
+async def on_back(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        if len(data['way']) != 0:
+            data['way'].pop()
+        if len(data['way']) == 0:
+            current_state = await state.get_state()
+            if current_state is None:
+                return
+            await state.finish()
+            await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
+        elif data['way'][-1] == 'start':
+            await FSM_schedule.schedule_start.set()
+            await bot.send_message(message.from_user.id, schedule_start_phrase, reply_markup=schedule_keyboard)
+        elif data['way'][-1] == 'pick_season':
+            await FSM_schedule.schedule_pick_season.set()
+            await bot.send_message(message.from_user.id, data['phrase'], reply_markup=data['keyboard'])
+
+
+
+async def to_start(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
+
 
 def register_handlers_schedule(dp: Dispatcher):
+    dp.register_message_handler(to_start, Text(equals='Вернуться на главный экран', ignore_case=True), state=[i for i in FSM_schedule.all_states])
+    dp.register_message_handler(on_back, Text(equals='Назад', ignore_case=True), state=[i for i in FSM_schedule.all_states])
     dp.register_message_handler(schedule_start, Text(equals='Расписание', ignore_case=True))
     dp.register_message_handler(schedule_pick_season, state=FSM_schedule.schedule_start)
     dp.register_message_handler(give_docs, state=FSM_schedule.schedule_pick_season)
