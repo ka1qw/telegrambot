@@ -26,7 +26,7 @@ async def schedule_start(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'] = ['start']
 
-    async with state.proxy() as data:
+    # async with state.proxy() as data:
         data['spring_scheds'], data['autumn_scheds'] = pars_all()
 
     if len(data['autumn_scheds']) > 0:
@@ -47,9 +47,9 @@ async def schedule_pick_season(message: types.Message, state: FSMContext):
     await FSM_schedule.next()
     async with state.proxy() as data:
         data['way'].append('pick_season')
-    async with state.proxy() as data:
+    # async with state.proxy() as data:
         data['faculty'] = message.text
-    async with state.proxy() as data:
+    # async with state.proxy() as data:
         if data['Autumn'] is True and data['Spring'] is True:
             await bot.send_message(message.from_user.id, schedule_pick_season_as, reply_markup=schedule_keyboard_season_as)
             data['phrase'] = schedule_pick_season_as
@@ -71,7 +71,7 @@ async def give_docs(message: types.Message, state: FSMContext):
     await FSM_schedule.next()
     async with state.proxy() as data:
         data['way'].append('give_docs')
-    async with state.proxy() as data:
+    # async with state.proxy() as data:
         data['season'] = message.text
         data['faculty'] = change_faculty_name(data['faculty'])
         url = "https://www.rshu.ru/university/stud/"
