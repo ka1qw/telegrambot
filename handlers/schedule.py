@@ -32,13 +32,13 @@ async def schedule_start(message: types.Message, state: FSMContext):
     # for key in data['autumn_scheds']:
     #     print("Осень", key, "-----", data['autumn_scheds'][key])
 
-    if len(data['spring_scheds']) > 0:
+    if len(data['autumn_scheds']) > 0:
         async with state.proxy() as data:
             data['Autumn'] = True
     else:
         async with state.proxy() as data:
             data['Autumn'] = False
-    if len(data['autumn_scheds']) > 0:
+    if len(data['spring_scheds']) > 0:
         async with state.proxy() as data:
             data['Spring'] = True
     else:
@@ -64,13 +64,12 @@ async def give_docs(message: types.Message, state: FSMContext):
     await FSM_schedule.next()
     async with state.proxy() as data:
         data['season'] = message.text
-        print(data['faculty'])
-        for key in data['autumn_scheds']:
-            print("Весна", key, "-----", data['autumn_scheds'][key])
+        data['faculty'] = change_faculty_name(data['faculty'])
+        url = "https://www.rshu.ru/university/stud/"
         if data['season'] == "Осенний семестр":
-            await bot.send_message(message.from_user.id, str(data['autumn_scheds'].get(data['faculty'])), reply_markup=schedule_keyboard_season_no_sch)
+            await bot.send_message(message.from_user.id,"Ссылка на скачивание документа: "+ url + str(data['autumn_scheds'].get(data['faculty'])), reply_markup=schedule_keyboard_season_no_sch)
         elif data['season'] == "Весенний семестр":
-            await bot.send_message(message.from_user.id, str(data['spring_scheds'].get(data['faculty'])), reply_markup=schedule_keyboard_season_no_sch)
+            await bot.send_message(message.from_user.id,"Ссылка на скачивание документа: "+ url + str(data['spring_scheds'].get(data['faculty'])), reply_markup=schedule_keyboard_season_no_sch)
 
 
 

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def pars_all():
     url = "https://www.rshu.ru/university/stud/"
     page = requests.get(url)
@@ -14,5 +15,14 @@ def pars_all():
         if link.get('href').find("first") != -1:
             hrefs_autumn[key_shot] = link.get('href')
 
-    return(hrefs_spring, hrefs_autumn)
+    return hrefs_spring, hrefs_autumn
 
+
+def change_faculty_name(name):
+    if name == "ИИСиГТ":
+        name = "Институт Информационных систем и геотехнологий"
+    elif name == "ИГиО":
+        name = "Институт гидрологии и океанологии"
+    elif name == "ФМиПП":
+        name = "Факультет морского и полярного права"
+    return name
