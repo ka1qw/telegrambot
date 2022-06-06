@@ -143,7 +143,7 @@ async def command_get_way(message: types.Message, state: FSMContext):
     else:
         await bot.send_message(message.from_user.id, str(check_result))
         await bot.send_message(message.from_user.id, "Попробуйте еще раз")
-    await FSMnavi.next()
+    # await FSMnavi.next()
 
 
 async def to_start(message: types.Message, state: FSMContext):
