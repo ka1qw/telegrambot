@@ -119,20 +119,20 @@ async def command_get_way(message: types.Message, state: FSMContext):
 
             new_path = path_auditorium(path)
 
-            # Вывод одним сообщением
-            #path_1 = ''
-            #for next in new_path:
-            #    path_1+=str(next)+'\n'
-            #await bot.send_message(message.from_user.id, f'*{path_1}*',parse_mode='Markdown')
-            #await bot.send_message(message.from_user.id, "Маршрут завершен")
-
-
-
-
-
+            #Вывод одним сообщением
+            path_1 = ''
             for next in new_path:
-                await bot.send_message(message.from_user.id, str(next))
+                path_1+=str(next)+'\n'
+            await bot.send_message(message.from_user.id, f'*{path_1}*',parse_mode='Markdown')
             await bot.send_message(message.from_user.id, "Маршрут завершен")
+
+
+
+
+            #Вывод в несколько сообщений
+            #for next in new_path:
+            #    await bot.send_message(message.from_user.id, str(next))
+            #await bot.send_message(message.from_user.id, "Маршрут завершен")
 
             for next in path_stages:
                 if (next == "0"):
