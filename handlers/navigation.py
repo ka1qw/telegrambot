@@ -97,7 +97,10 @@ async def command_get_way(message: types.Message, state: FSMContext):
 
     if check_result == "Маршрут построен":
         async with state.proxy() as data:
-            await bot.send_message(message.from_user.id, "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+            if(data['from'][0].isnumeric() == True):
+                await bot.send_message(message.from_user.id, "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+            else:
+                await bot.send_message(message.from_user.id, "Искомый путь: от " + str(data['from']) + " до " + str(data['to']))
             await bot.send_message(message.from_user.id, str(check_result))
             came_from, cost_so_far = dijkstra_search(example_graph, data['from'], data['to'])
 
@@ -134,7 +137,7 @@ async def command_get_way(message: types.Message, state: FSMContext):
                     await bot.send_photo(message.from_user.id, open("resources/images/2_floor.jpg", 'rb'), "Второй этаж")
                 elif (next == "3"):
                     await bot.send_photo(message.from_user.id, open("resources/images/3_floor.jpg", 'rb'), "Третий этаж")
-
+            await FSMnavi.next()
            #отладка графа
            #came_from_2 = breadth_first_search_1(example_graph, data['from'])
     else:
