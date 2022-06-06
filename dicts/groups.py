@@ -1,4 +1,5 @@
 groups = {
+    #todo: сделать независимый регистр
     'ПИ-Б21-1': {'summer_holidays': '02.07 - 31.08', 'winter_holidays': '11.01 - 16.01', 'Institute': 'ИСИГТ', 'department': 'Прикладная информатика'},
     'ПИ-Б20-1-2': {'summer_holidays': '02.07 - 31.08', 'winter_holidays': '11.01 - 16.01', 'Institute': 'ИСИГТ', 'department': 'Прикладная информатика'},
     'ПИ-Б20-2-2': {'summer_holidays': '02.07 - 31.08', 'winter_holidays': '11.01 - 16.01', 'Institute': 'ИСИГТ', 'department': 'Прикладная информатика'},
