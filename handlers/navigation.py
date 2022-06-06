@@ -97,7 +97,10 @@ async def command_get_way(message: types.Message, state: FSMContext):
 
     if check_result == "Маршрут построен":
         async with state.proxy() as data:
-            await bot.send_message(message.from_user.id, "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+            if(data['from'][0].isnumeric() == True):
+                await bot.send_message(message.from_user.id, "Искомый путь: от аудитории " + str(data['from']) + " до " + str(data['to']))
+            else:
+                await bot.send_message(message.from_user.id, "Искомый путь: от " + str(data['from']) + " до " + str(data['to']))
             await bot.send_message(message.from_user.id, str(check_result))
             came_from, cost_so_far = dijkstra_search(example_graph, data['from'], data['to'])
 
