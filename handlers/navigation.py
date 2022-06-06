@@ -15,12 +15,19 @@ from keyboards.main_menu_kbs import *
 
 # словари
 from dicts.graf import graf
+from dicts.cabs import cabs
 
 #навигационные алгоритмы
 from repository.implementation import *
 
 example_graph = SimpleGraph()
 example_graph.edges = graf
+
+# фотки
+floor_0 = open("resources/images/0_floor.jpg", 'rb')
+floor_1 = open("resources/images/1_floor.jpg", 'rb')
+floor_2 = open("resources/images/2_floor.jpg", 'rb')
+floor_3 = open("resources/images/3_floor.jpg", 'rb')
 
 
 
@@ -104,19 +111,39 @@ async def command_get_way(message: types.Message, state: FSMContext):
 
             path = reconstruct_path(came_from, data['from'], data['to'])
 
+            path_stages = []
+
+            for next in path:
+                if cabs.get(next) not in path_stages:
+                    path_stages.append(cabs.get(next))
+
             new_path = path_auditorium(path)
 
-            ''' Вывод одним сообщением
-            path_1 = ''
-            for next in new_path:
-                path_1+=str(next)+'\n'
-            await bot.send_message(message.from_user.id, f'*{path_1}*',parse_mode='Markdown')
-            await bot.send_message(message.from_user.id, "Маршрут завершен")
-            '''
+            # Вывод одним сообщением
+            #path_1 = ''
+            #for next in new_path:
+            #    path_1+=str(next)+'\n'
+            #await bot.send_message(message.from_user.id, f'*{path_1}*',parse_mode='Markdown')
+            #await bot.send_message(message.from_user.id, "Маршрут завершен")
+
+
+
+
 
             for next in new_path:
                 await bot.send_message(message.from_user.id, str(next))
             await bot.send_message(message.from_user.id, "Маршрут завершен")
+
+            for next in path_stages:
+                if (next == "0"):
+                    await bot.send_photo(message.from_user.id, floor_0, "Цокольный этаж")
+                elif(next == "1"):
+                    await bot.send_photo(message.from_user.id, floor_1, "Первый этаж")
+                elif (next == "2"):
+                    await bot.send_photo(message.from_user.id, floor_2, "Второй этаж")
+                elif (next == "3"):
+                    await bot.send_photo(message.from_user.id, floor_3, "Третий этаж")
+
            #отладка графа
            #came_from_2 = breadth_first_search_1(example_graph, data['from'])
     else:
