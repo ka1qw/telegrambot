@@ -134,13 +134,13 @@ async def command_get_way(message: types.Message, state: FSMContext):
                     await bot.send_photo(message.from_user.id, open("resources/images/2_floor.jpg", 'rb'), "Второй этаж")
                 elif (next == "3"):
                     await bot.send_photo(message.from_user.id, open("resources/images/_floor.jpg", 'rb'), "Третий этаж")
-
+            await FSMnavi.next()
            #отладка графа
            #came_from_2 = breadth_first_search_1(example_graph, data['from'])
     else:
         await bot.send_message(message.from_user.id, str(check_result))
         await bot.send_message(message.from_user.id, "Попробуйте еще раз")
-    await FSMnavi.next()
+
 
 
 async def to_start(message: types.Message, state: FSMContext):
