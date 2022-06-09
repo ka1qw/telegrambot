@@ -143,7 +143,9 @@ async def command_get_way(message: types.Message, state: FSMContext):
     else:
         await bot.send_message(message.from_user.id, str(check_result))
         await bot.send_message(message.from_user.id, "Попробуйте еще раз")
-    # await FSMnavi.next()
+        async with state.proxy() as data:
+            data['way'].pop()
+    #await FSMnavi.next()
 
 
 async def to_start(message: types.Message, state: FSMContext):
@@ -182,6 +184,9 @@ async def on_back(message: types.Message, state: FSMContext):
             await bot.send_message(message.from_user.id, navigation_other, reply_markup=navigation_other_kb)
         elif data['way'][-1] == 'place_now':
             await FSMnavi.pathfinder.set()
+            await bot.send_message(message.from_user.id, navigation_get_place, reply_markup=clear_keyboard)
+        elif data['way'][-1] == 'get_way':
+            await FSMnavi.place_now.set()
             await bot.send_message(message.from_user.id, navigation_get_place, reply_markup=clear_keyboard)
 
 
