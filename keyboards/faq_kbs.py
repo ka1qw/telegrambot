@@ -2,6 +2,11 @@ from keyboards.stdafx import *
 from keyboards.common_kbs_and_btns import to_main_menu_btn, back_btn
 
 '''--------------------------------FAQ--------------------------------'''
+#пустая клава
+faq_empty_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+faq_empty_btn = KeyboardButton(' ')
+faq_empty_kb.add(faq_empty_btn)
+
 faq_main_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 faq_holiday_btn = KeyboardButton('Каникулы')
 faq_addSession_btn = KeyboardButton('Сессия')
