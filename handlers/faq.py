@@ -43,7 +43,7 @@ async def command_faq_start(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'] = ['faq_start']
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 # каникулы
@@ -56,14 +56,14 @@ async def command_faq_holidays_choice_group(message: types.Message, state: FSMCo
     async with state.proxy() as data:
         data['way'].append('holidays')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_holidays_group_input(message: types.Message, state: FSMContext):
     if message.text == "Я не знаю свою группу":
         await FSMfaq.holidays_1.set()
         async with state.proxy() as data:
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
                                reply_markup=only_to_main_menu_kb)
     elif message.text in [i[0] for i in groups.items()]:
@@ -71,7 +71,7 @@ async def command_faq_holidays_group_input(message: types.Message, state: FSMCon
         async with state.proxy() as data:
             data['way'].append('holidays_1')
             print(f"Ветка состояний: {data['way']}")
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
             data['group'] = message.text
             await bot.send_message(message.from_user.id, emoji.emojize(f'Твоя группа: {data["group"]}\n'
                                                                        f':sunflower: Летние каникулы: {groups.get(message.text).get("summer_holidays")}\n'
@@ -89,7 +89,7 @@ async def command_faq_session(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('session')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_common_session(message: types.Message, state: FSMContext):
@@ -98,7 +98,7 @@ async def command_faq_common_session(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('session_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_add_session(message: types.Message, state: FSMContext):
@@ -107,7 +107,7 @@ async def command_faq_add_session(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('session_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_addsession_department_choice(message: types.Message, state: FSMContext):
@@ -117,7 +117,7 @@ async def command_faq_addsession_department_choice(message: types.Message, state
     async with state.proxy() as data:
         data['way'].append('session_2')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_addsession_group_input(message: types.Message, state: FSMContext):
@@ -130,7 +130,7 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         async with state.proxy() as data:
             data['way'].append('session_3')
             print(f"Ветка состояний: {data['way']}")
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
             data['group'] = message.text
             await bot.send_message(message.from_user.id, f'*Твоя группа:* {data["group"]}\n'
                                                          f'*Твой деканат:* деканат факультета/института '
@@ -150,49 +150,52 @@ async def command_faq_scholarship(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('scholarship')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_increased_scholarship(message: types.Message, state: FSMContext):
-    await FSMfaq.scholarship_1.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_increased_scholarship_info,
-                           reply_markup=back_and_to_main_menu_kb)
+    await bot.send_message(message.from_user.id, faq_waiting_for_doc, reply_markup=faq_empty_kb)
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/increased_scholarship/Заявление.docx", 'rb'))
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/increased_scholarship/Карта_претендента.docx", 'rb'))
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/increased_scholarship/Регламент.pdf", 'rb'))
+    await bot.send_message(message.from_user.id, faq_scholarship_increased_scholarship_info,
+                           reply_markup=back_and_to_main_menu_kb)
+    await FSMfaq.scholarship_1.set()
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_common_scholarship(message: types.Message, state: FSMContext):
-    await FSMfaq.scholarship_1.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_common_scholarship_info,
-                           reply_markup=back_and_to_main_menu_kb)
+    await bot.send_message(message.from_user.id, faq_waiting_for_doc, reply_markup=faq_empty_kb)
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/common_scholarship/Приказ о размере стипендий.pdf", 'rb'))
+    await bot.send_message(message.from_user.id, faq_scholarship_common_scholarship_info,
+                           reply_markup=back_and_to_main_menu_kb)
+    await FSMfaq.scholarship_1.set()
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_social_scholarship(message: types.Message, state: FSMContext):
-    await FSMfaq.scholarship_1.set()
-    await bot.send_message(message.from_user.id, faq_scholarship_social_scholarship_info,
-                           reply_markup=back_and_to_main_menu_kb,parse_mode="Markdown")
+    await bot.send_message(message.from_user.id, faq_waiting_for_doc, reply_markup=faq_empty_kb)
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/social_scholarship/Положение о назначении стипендий.pdf",'rb'))
     await bot.send_document(message.from_user.id,
                             document=open("resources/docs/common_scholarship/Приказ о размере стипендий.pdf", 'rb'))
+    await bot.send_message(message.from_user.id, faq_scholarship_social_scholarship_info,
+                           reply_markup=back_and_to_main_menu_kb,parse_mode="Markdown")
+    await FSMfaq.scholarship_1.set()
     async with state.proxy() as data:
         data['way'].append('scholarship_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 # военка
@@ -202,7 +205,7 @@ async def command_faq_military_department_choice(message: types.Message, state: 
     async with state.proxy() as data:
         data['way'].append('militaryDep')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_military_department_centre(message: types.Message, state: FSMContext):
@@ -211,7 +214,7 @@ async def command_faq_military_department_centre(message: types.Message, state: 
     async with state.proxy() as data:
         data['way'].append('militaryDep_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_military_department_table(message: types.Message, state: FSMContext):
@@ -220,7 +223,7 @@ async def command_faq_military_department_table(message: types.Message, state: F
     async with state.proxy() as data:
         data['way'].append('militaryDep_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 # общежития
@@ -231,7 +234,7 @@ async def command_faq_dormitory(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_1st(message: types.Message, state: FSMContext):
@@ -241,7 +244,7 @@ async def command_faq_dormitory_1st(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_2nd(message: types.Message, state: FSMContext):
@@ -251,7 +254,7 @@ async def command_faq_dormitory_2nd(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_3rd(message: types.Message, state: FSMContext):
@@ -261,7 +264,7 @@ async def command_faq_dormitory_3rd(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_4th(message: types.Message, state: FSMContext):
@@ -271,7 +274,7 @@ async def command_faq_dormitory_4th(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_5th(message: types.Message, state: FSMContext):
@@ -281,21 +284,22 @@ async def command_faq_dormitory_5th(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 async def command_faq_dormitory_pay_info(message: types.Message, state: FSMContext):
-    await FSMfaq.dormitory_1.set()
-    await message.reply(faq_dormitory_pay_info, reply_markup=back_and_to_main_menu_kb, parse_mode="Markdown")
+    await bot.send_message(message.from_user.id, faq_waiting_for_doc, reply_markup=faq_empty_kb)
     await bot.send_document(message.from_user.id,
                             document=open('resources/docs/dormitory_pay/Размеры платы за проживание.pdf', 'rb'))
     await bot.send_photo(message.from_user.id,
                          open('resources/docs/dormitory_pay/Бланк квитанции на оплату.jpg', 'rb'),
                          'Квитанция об оплате')
+    await message.reply(faq_dormitory_pay_info, reply_markup=back_and_to_main_menu_kb, parse_mode="Markdown")
+    await FSMfaq.dormitory_1.set()
     async with state.proxy() as data:
         data['way'].append('dormitory_1')
         print(f"Ветка состояний: {data['way']}")
-        print(f"Нынешнее состояние: {await state.get_state()}\n")
+        print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 # Выход из состояний
@@ -304,7 +308,7 @@ async def to_start_faq(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    print(f"Нынешнее состояние: {await state.get_state()}\n")
+    print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
     await bot.send_message(message.from_user.id, "Возвращаю на главную", reply_markup=mainMenu_kb)
 
 
@@ -323,55 +327,55 @@ async def on_back_faq(message: types.Message, state: FSMContext):
         elif data['way'][-1] == 'faq_start':
             await FSMfaq.faq_start.set()
             await bot.send_message(message.from_user.id, faq_start_phrase, reply_markup=faq_main_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'holidays':
             await FSMfaq.holidays.set()
             await bot.send_message(message.from_user.id, faq_holiday_main_info)
             await bot.send_message(message.from_user.id, faq_holiday_info_individual,
                                    reply_markup=faq_addSession_department_group_input_kb, parse_mode='Markdown')
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'scholarship':
             await FSMfaq.scholarship.set()
             await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'scholarship_1':
             await FSMfaq.scholarship_1.set()
             await bot.send_message(message.from_user.id, faq_scholarship_choice, reply_markup=faq_scholarship_choice_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'dormitory':
             await FSMfaq.dormitory.set()
             await bot.send_message(message.from_user.id, faq_dormitory_main_info,
                                    reply_markup=faq_dormitory_choice_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'dormitory_1':
             await FSMfaq.dormitory_1.set()
             await bot.send_message(message.from_user.id, faq_dormitory_main_info,
                                    reply_markup=back_and_to_main_menu_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'militaryDep':
             await FSMfaq.militaryDep.set()
             await bot.send_message(message.from_user.id, faq_militaryDep_info_choice,
                                    reply_markup=faq_militaryDep_choice)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'militaryDep_1':
             await FSMfaq.militaryDep_1.set()
             await bot.send_message(message.from_user.id, faq_militaryDep_info_choice,
                                    reply_markup=back_and_to_main_menu_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'session':
             await FSMfaq.session.set()
             await bot.send_message(message.from_user.id, faq_session_main_info, reply_markup=faq_session_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'session_1':
             await FSMfaq.session_1.set()
             await bot.send_message(message.from_user.id, faq_addSession_info,
                                    reply_markup=faq_addSession_choice_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         elif data['way'][-1] == 'session_2':
             await FSMfaq.session_2.set()
             await bot.send_message(message.from_user.id, faq_addSession_department_info,
                                    reply_markup=faq_addSession_department_group_input_kb)
-            print(f"Нынешнее состояние: {await state.get_state()}\n")
+            print(f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
 
 
 # команда для обработки неизвестных сообщений
