@@ -22,9 +22,9 @@ async def command_start(message: types.Message):
                 a = line.split(':')
                 k.append(str(a[0]))
         with open("users.txt", 'a') as user_data:
-            if str(message.from_user.id) not in k:
+            if str(message.from_user.id) + '\n' not in k:
                 user_data.write(user_id + '\n')
-        print(k)
+                print(f'Новый пользователь {message.from_user.username} с id {message.from_user.id} добавлен!')
         k.clear()
     except FileNotFoundError:
         print("[ERROR]: File users not found")
