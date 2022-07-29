@@ -29,7 +29,7 @@ async def command_start(message: types.Message):
     except FileNotFoundError:
         print("[ERROR]: File users not found")
     except:
-        await message.reply("Общение с ботом происходит через личные сообщения\nhttps://t.me/TimeTableISIGTBot")
+        await message.reply("Общение с ботом происходит через личные сообщения\nhttps://t.me/rshu_assistent_bot")
 
 
 # возврат на главный экран
