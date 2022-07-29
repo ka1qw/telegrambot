@@ -15,7 +15,7 @@ async def command_start(message: types.Message):
     try:
         user_id = str(message.from_user.id)
         k = []
-        await bot.send_message(message.from_user.id, start_phrase, reply_markup=mainMenu_kb)
+        await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!\n" + start_phrase, reply_markup=mainMenu_kb)
         # await message.delete()
         with open("users.txt", 'r') as user_data:
             for line in user_data:
