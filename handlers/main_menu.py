@@ -15,7 +15,7 @@ async def command_start(message: types.Message):
     try:
         user_id = str(message.from_user.id)
         k = []
-        await bot.send_message(message.from_user.id, start_phrase, reply_markup=mainMenu_kb)
+        await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!\n" + start_phrase, reply_markup=mainMenu_kb)
         # await message.delete()
         with open("users.txt", 'r') as user_data:
             for line in user_data:
@@ -29,7 +29,7 @@ async def command_start(message: types.Message):
     except FileNotFoundError:
         print("[ERROR]: File users not found")
     except:
-        await message.reply("Общение с ботом происходит через личные сообщения\nhttps://t.me/TimeTableISIGTBot")
+        await message.reply("Общение с ботом происходит через личные сообщения\nhttps://t.me/rshu_assistent_bot")
 
 
 # возврат на главный экран

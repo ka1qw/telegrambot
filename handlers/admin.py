@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters import Text
 from dicts.admins import admin_ids
 from keyboards.main_menu_kbs import mainMenu_kb
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.dispatcher.filters.state import StatesGroup, State, default_state
 
 
 async def command_admin_menu(message: types.Message):
@@ -34,6 +34,7 @@ async def command_refresh(message: types.Message):
         f'                      Начинаю обновление для {len(admins)} юзеров.\n')
     for user in admins:
         try:
+            await State.set(default_state)
             await bot.send_message(user, start_phrase,reply_markup=mainMenu_kb)
             print(f'[{count}/{len(admins)}] Сообщение пользователю с id = {user} успешно отправлено')
         except Exception as ex:
