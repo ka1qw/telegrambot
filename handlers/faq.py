@@ -423,7 +423,7 @@ def register_handlers_faq(dp: Dispatcher):
     dp.register_message_handler(on_back_faq, Text(equals='Назад', ignore_case=True),
                                 state=[i for i in FSMfaq.all_states])
     dp.register_message_handler(to_start_faq, Text(equals='Вернуться на главный экран', ignore_case=True),
-                                state=[i for i in FSMfaq.all_states])
+                                state='*')
     dp.register_message_handler(command_faq_start, Text(equals='FAQ', ignore_case=True), state=None)
 
     # каникулы
