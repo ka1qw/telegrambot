@@ -23,6 +23,7 @@ async def command_start(message: types.Message):
                 k.append(str(a[0]))
         with open("users.txt", 'a') as user_data:
             if str(message.from_user.id) + '\n' not in k:
+                # TODO: записывать имя пользователя вместе с id
                 user_data.write(user_id + '\n')
                 print(f'Новый пользователь {message.from_user.username} с id {message.from_user.id} добавлен!')
         k.clear()

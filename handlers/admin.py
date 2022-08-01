@@ -23,6 +23,7 @@ async def command_admin_menu(message: types.Message):
 Используется после перезапуска бота.
 '''
 async def command_refresh(message: types.Message):
+    # TODO: сделать словарь юзеров вместо списка, содержание - username, id
     admins = []
     # здесь должен быть список всех пользователей, сейчас только админы - для теста
     with open("admins.txt", 'r') as user_data:
