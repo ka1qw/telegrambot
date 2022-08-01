@@ -18,7 +18,6 @@ from keyboards.main_menu_kbs import *
 
 # эмодзи
 import emoji
-print('test')
 
 class FSMfaq(StatesGroup):
     faq_start = State()
