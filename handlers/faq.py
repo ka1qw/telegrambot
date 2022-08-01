@@ -18,6 +18,7 @@ from keyboards.main_menu_kbs import *
 
 # эмодзи
 import emoji
+from emoji import emojize
 
 class FSMfaq(StatesGroup):
     faq_start = State()
@@ -68,19 +69,19 @@ async def command_faq_holidays_group_input(message: types.Message, state: FSMCon
                 f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
         await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
                                reply_markup=only_to_main_menu_kb)
-    elif message.text in [i[0] for i in groups.items()]:
+    elif message.text.lower() in [i[0] for i in groups.items()]:
         await FSMfaq.holidays_1.set()
         async with state.proxy() as data:
             data['way'].append('holidays_1')
             print(f"Ветка состояний: {data['way']}")
             print(
                 f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
-            data['group'] = message.text
+            data['group'] = message.text.upper()
             await bot.send_message(message.from_user.id, emoji.emojize(f'Твоя группа: {data["group"]}\n'
-                                                                       f':sunflower: Летние каникулы: {groups.get(message.text).get("summer_holidays")}\n'
-                                                                       f':snowflake: Зимние каникулы: {groups.get(message.text).get("winter_holidays")}'),
+                                                                       f':sunflower: Летние каникулы: {groups.get(message.text.lower()).get("summer_holidays")}\n'
+                                                                       f':snowflake: Зимние каникулы: {groups.get(message.text.lower()).get("winter_holidays")}'),
                                    reply_markup=back_and_to_main_menu_kb)
-    elif message.text not in [i[0] for i in groups.items()]:
+    elif message.text.lower() not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
                                reply_markup=faq_addSession_department_group_input_kb_without_back_btn)
 
@@ -132,21 +133,21 @@ async def command_faq_addsession_group_input(message: types.Message, state: FSMC
         await FSMfaq.session_3.set()
         await bot.send_message(message.from_user.id, emoji.emojize(faq_addSession_group_info),
                                reply_markup=only_to_main_menu_kb)
-    elif message.text in [i[0] for i in groups.items()]:
+    elif message.text.lower() in [i[0] for i in groups.items()]:
         await FSMfaq.session_3.set()
         async with state.proxy() as data:
             data['way'].append('session_3')
             print(f"Ветка состояний: {data['way']}")
             print(
                 f"Нынешнее состояние для юзера [{message.from_user.username}] с id [{message.from_user.id}]: {await state.get_state()}\n")
-            data['group'] = message.text
+            data['group'] = message.text.upper()
             await bot.send_message(message.from_user.id, f'*Твоя группа:* {data["group"]}\n'
                                                          f'*Твой деканат:* деканат факультета/института '
-                                                         f'{groups.get(message.text).get("Institute")}.\n\n'
+                                                         f'{groups.get(message.text.lower()).get("Institute")}.\n\n'
                                                          f'Если ты не знаешь, как до него добраться, воспользуйся разделом'
                                                          f' *"Навигация по корпусу"* на главном экране.',
                                    reply_markup=back_and_to_main_menu_kb, parse_mode='Markdown')
-    elif message.text not in [i[0] for i in groups.items()]:
+    elif message.text.lower() not in [i[0] for i in groups.items()]:
         await bot.send_message(message.from_user.id, "Такой группы в моей базе нет!\nВведи еще раз.",
                                reply_markup=faq_addSession_department_group_input_kb_without_back_btn)
 
@@ -415,7 +416,8 @@ async def on_back_faq(message: types.Message, state: FSMContext):
 
 # команда для обработки неизвестных сообщений
 async def unknown_command_faq(message: types.Message):
-    await bot.send_message(message.from_user.id, "Неизвестная команда")
+    await bot.send_message(message.from_user.id, emojize("Неизвестная команда\n"
+                                                 "Если ты заблудился, выйди в главное меню с помощью клавиатуры :winking_face:"))
 
 
 # регистрация хендлеров
