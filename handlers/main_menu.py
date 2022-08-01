@@ -13,24 +13,28 @@ from keyboards.main_menu_kbs import *
 # команда /start или /help
 async def command_start(message: types.Message):
     try:
-        user_id = str(message.from_user.id)
-        k = []
-        await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!\n" + start_phrase, reply_markup=mainMenu_kb)
-        # await message.delete()
-        with open("users.txt", 'r') as user_data:
-            for line in user_data:
-                a = line.split(':')
-                k.append(str(a[0]))
-        with open("users.txt", 'a') as user_data:
-            if str(message.from_user.id) + '\n' not in k:
-                # TODO: записывать имя пользователя вместе с id
-                user_data.write(user_id + '\n')
-                print(f'Новый пользователь {message.from_user.username} с id {message.from_user.id} добавлен!')
-        k.clear()
+        user_data = str(message.from_user.values)
+        user_ids = []
+        if message.from_user.username is None:
+            await bot.send_message(message.from_user.id, f"Привет, незнакомец без имени пользователя!\n" + start_phrase,
+                                   reply_markup=mainMenu_kb)
+        else:
+            await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!\n" + start_phrase,
+                                   reply_markup=mainMenu_kb)
+        with open("users.txt", 'r') as users_data:
+            for line in users_data:
+                k = eval(line)
+                user_ids.append(k.get('id'))
+        with open("users.txt", 'a') as users_data:
+            if message.from_user.id not in user_ids:
+                users_data.write(user_data + '\n')
+                if message.from_user.username is not None:
+                    print(
+                        f'Новый пользователь с именем {message.from_user.username} и id {message.from_user.id} добавлен!')
+                else:
+                    print(f'Новый пользователь без имени пользователя с id {message.from_user.id} добавлен!')
     except FileNotFoundError:
         print("[ERROR]: File users not found")
-    except:
-        await message.reply("Общение с ботом происходит через личные сообщения\nhttps://t.me/rshu_assistent_bot")
 
 
 # возврат на главный экран

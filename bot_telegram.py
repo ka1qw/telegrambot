@@ -3,18 +3,20 @@ from create_bot import dp, bot
 from aiogram import types
 from phrases.common_phrases import *
 from keyboards.main_menu_kbs import *
-from dicts.admins import admin_ids
+from dicts.admins import admins_dict
 
 
 # admin_ids = ['875231826','5336662587', '213'] #969667049 - митяй
 
 
 async def on_startup(message: types.Message):
-    for i in admin_ids:
+    # TODO: вместо списка админов будет список юзеров в финальной версии
+    for _, user_id in admins_dict.items():
         try:
-            await bot.send_message(i, start_phrase, reply_markup=mainMenu_kb)
+            pass
+            #await bot.send_message(user_id.get('id'), start_phrase, reply_markup=mainMenu_kb)
         except Exception as ex:
-            print(f"[ERROR {ex}]: Пользователь с id = {i} не найден!")
+            print(f"[ERROR {ex}]: Пользователь с id = {user_id} не найден!")
 
 
 # async def on_shutdown(message: types.Message):

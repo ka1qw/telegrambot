@@ -4,18 +4,20 @@ from phrases.admin_phrases import *
 from keyboards.admin_kbs import *
 from phrases.common_phrases import *
 from aiogram.dispatcher.filters import Text
-from dicts.admins import admin_ids
+from dicts.admins import admins_dict
 from keyboards.main_menu_kbs import mainMenu_kb
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State, default_state
 
 
 async def command_admin_menu(message: types.Message):
+    admin_ids = []
+    for admin in admins_dict.keys():
+        admin_ids.append(admins_dict.get(admin).get('id'))
     if str(message.from_user.id) in admin_ids:
         await bot.send_message(message.from_user.id, 'Админка', reply_markup=admin_start_kb)
     else:
         pass
-        # await bot.send_message(message.from_user.id,message.from_user.id)
 
 
 '''
