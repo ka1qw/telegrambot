@@ -1,0 +1,2 @@
+{'id': 5336662587, 'is_bot': False, 'first_name': '���', 'last_name': 'Sss', 'language_code': 'ru'}
+{'id': 875231826, 'is_bot': False, 'first_name': 'Alexander', 'username': 'yuppy324', 'language_code': 'ru'}

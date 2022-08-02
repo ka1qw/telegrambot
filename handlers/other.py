@@ -2,11 +2,12 @@ from aiogram import types, Dispatcher
 from create_bot import bot
 from keyboards.main_menu_kbs import mainMenu_kb
 from aiogram.dispatcher.filters import Text
+from emoji import emojize
 
 
 async def echo_send(message: types.Message):
-    await bot.send_message(message.from_user.id, "Неизвестная команда")
-    # print(message.from_user.id)
+    await bot.send_message(message.from_user.id, emojize("Неизвестная команда\n"
+                                                         "Если ты заблудился, выйди в главное меню с помощью клавиатуры :winking_face:"))
 
 
 async def thank_command(message: types.Message):
@@ -14,9 +15,10 @@ async def thank_command(message: types.Message):
     with open("users.txt", 'r') as user_data:
         for line in user_data:
             b.append(line.replace('\n', ''))
-    c = ['5336662587','875231826']
+    c = ['5336662587', '875231826']
     count = 1
-    print(f'########################################################################\nНачинаю рассылку для {len(b)} юзеров.')
+    print(
+        f'########################################################################\nНачинаю рассылку для {len(b)} юзеров.')
     # тут надо for item in b чтобы идти по юзерам
     for item in c:
         try:
